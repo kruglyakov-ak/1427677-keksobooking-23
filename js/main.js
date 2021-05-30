@@ -3,7 +3,7 @@ const getRundomNumberInRange = (min, max, numberSimbolsAfterComma) => {
   if (min < max && min >= 0) {
     return rundomNumber.toFixed(numberSimbolsAfterComma);
   }
-return;
+  throw new Error('Передан неправильный диапазон, число "min" должно быть положительным и меньше числа "max".');
 };
 
 getRundomNumberInRange(0, 1, 2);
