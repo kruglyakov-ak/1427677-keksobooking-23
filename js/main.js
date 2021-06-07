@@ -1,8 +1,8 @@
-function getRundomNumberInRange (min = 0, max = 1, numberSymbolsAfterComma = 0) {
+function getRandomNumberInRange (min = 0, max = 1, numberSymbolsAfterComma = 0) {
   const lower = Math.min(Math.abs(min), Math.abs(max));
   const upper = Math.max(Math.abs(min), Math.abs(max));
-  const rundomNumber = Math.random() * (upper - lower) + lower;
-  return +rundomNumber.toFixed(numberSymbolsAfterComma);
+  const randomNumber = Math.random() * (upper - lower) + lower;
+  return +randomNumber.toFixed(numberSymbolsAfterComma);
 }
 
 const TYPE = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
@@ -16,12 +16,12 @@ const PHOTOS = [
 ];
 
 
-function getArrayRundomElement (array) {
-  return array[getRundomNumberInRange(0, array.length - 1)];
+function getArrayRandomElement (array) {
+  return array[getRandomNumberInRange(0, array.length - 1)];
 }
 
-function getArrayRundomLength (array) {
-  array.length = getRundomNumberInRange(1, array.length);
+function getArrayRandomLength (array) {
+  array = array.slice(0, getRandomNumberInRange(1, array.length - 1, 0));
   return array;
 }
 
@@ -33,21 +33,21 @@ function createNewOffer (lat, lng) {
   return {
     title: 'Милая, уютная квартира в центре Токио.',
     address: `${lat  }, ${  lng}`,
-    price: getRundomNumberInRange(10000, 10000000),
-    type: getArrayRundomElement(TYPE),
-    rooms: getRundomNumberInRange(1, 10),
-    guests: getRundomNumberInRange(1, 10),
-    checkin: getArrayRundomElement(CHECKIN),
-    checkout: getArrayRundomElement(CHECKOUT),
-    features: getArrayRundomLength (FEATURES),
+    price: getRandomNumberInRange(10000, 10000000),
+    type: getArrayRandomElement(TYPE),
+    rooms: getRandomNumberInRange(1, 10),
+    guests: getRandomNumberInRange(1, 10),
+    checkin: getArrayRandomElement(CHECKIN),
+    checkout: getArrayRandomElement(CHECKOUT),
+    features: getArrayRandomLength (FEATURES),
     description: 'Самое лучшее жилье в городе!',
-    photos: getArrayRundomLength (PHOTOS),
+    photos: getArrayRandomLength (PHOTOS),
   };
 }
 
 function createNewAd (int) {
-  const lat = getRundomNumberInRange(35.65, 35.7, 5);
-  const lng = getRundomNumberInRange(139.7, 139.8, 5);
+  const lat = getRandomNumberInRange(35.65, 35.7, 5);
+  const lng = getRandomNumberInRange(139.7, 139.8, 5);
   const ad = {
     author: createNewAuthor (int),
     offer: createNewOffer(lat, lng),
