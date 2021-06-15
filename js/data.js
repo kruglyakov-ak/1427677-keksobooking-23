@@ -1,4 +1,11 @@
-import {getRandomNumberInRange, getArrayRandomElement, getArrayRandomLength} from './util.js';
+import {
+  getRandomNumberInRange,
+  getArrayRandomElement,
+  getRandomArrayLength,
+  makeUniqueRandomIntegerGenerator
+} from './util.js';
+
+
 
 const TYPES = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
 const CHECKINS = ['12:00', '13:00', '14:00'];
@@ -19,15 +26,17 @@ const MIN_LATITUDE = 35.65;
 const MAX_LATITUDE = 35.7;
 const MIN_LONGITUDE = 139.7;
 const MAX_LONGITUDE = 139.8;
-const ARRAYS_COUNT = 10;
+const ADS_COUNT = 10;
 
-function createNewAuthor(i) {
+const getUniqueRandomIntegerForUrlAvatar = makeUniqueRandomIntegerGenerator(1, ADS_COUNT);
+
+function createAuthor() {
   return {
-    avatar: `img/avatars/user${i.toString().padStart(2, '0')}.png`,
+    avatar: `img/avatars/user${getUniqueRandomIntegerForUrlAvatar().toString().padStart(2, '0')}.png`,
   };
 }
 
-function createNewOffer(lat, lng) {
+function createOffer(lat, lng) {
   return {
     title: 'Милая, уютная квартира в центре Токио.',
     address: `${lat}, ${lng}`,
@@ -37,18 +46,18 @@ function createNewOffer(lat, lng) {
     guests: getRandomNumberInRange(MIN_GUESTS, MAX_GUESTS),
     checkin: getArrayRandomElement(CHECKINS),
     checkout: getArrayRandomElement(CHECKOUTS),
-    features: getArrayRandomLength(FEATURES),
+    features: getRandomArrayLength(FEATURES),
     description: 'Самое лучшее жилье в городе!',
-    photos: getArrayRandomLength(PHOTOS),
+    photos: getRandomArrayLength(PHOTOS),
   };
 }
 
-function createNewAd(int) {
+function createAd() {
   const lat = getRandomNumberInRange(MIN_LATITUDE, MAX_LATITUDE, 5);
   const lng = getRandomNumberInRange(MIN_LONGITUDE, MAX_LONGITUDE, 5);
   const ad = {
-    author: createNewAuthor(int),
-    offer: createNewOffer(lat, lng),
+    author: createAuthor(),
+    offer: createOffer(lat, lng),
     location: {
       lat: lat,
       lng: lng,
@@ -57,16 +66,15 @@ function createNewAd(int) {
   return ad;
 }
 
-function getNewArrayAds(count) {
-  const newArrayAds = [];
-  let i = 1;
-  while (i <= count) {
-    newArrayAds.push(createNewAd(i));
-    i++;
+function generateAds(count) {
+  const ads = [];
+  while (ads.length < count) {
+    ads.push(createAd());
   }
-  return newArrayAds;
+  return ads;
 }
 
-const datasAds = getNewArrayAds(ARRAYS_COUNT);
-
-export {datasAds};
+export {
+  generateAds,
+  ADS_COUNT
+};
