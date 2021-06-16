@@ -10,7 +10,7 @@ function getArrayRandomElement(array) {
 }
 
 function getRandomArrayLength(array) {
-  return array.slice(0, getRandomNumberInRange(1, array.length - 1));
+  return array.slice(0, getRandomNumberInRange(1, array.length));
 }
 
 const makeUniqueRandomIntegerGenerator = (min, max) => {
@@ -19,7 +19,7 @@ const makeUniqueRandomIntegerGenerator = (min, max) => {
   return () => {
     let currentValue = getRandomNumberInRange(min, max);
     if (previousValues.length >= (max - min + 1)) {
-      throw new Error(`Перебраны все числа из диапазона от ${  min  } до ${  max}`);
+      throw new Error(`Перебраны все числа из диапазона от ${min} до ${max}`);
     }
     while (previousValues.includes(currentValue)) {
       currentValue = getRandomNumberInRange(min, max);
@@ -29,4 +29,9 @@ const makeUniqueRandomIntegerGenerator = (min, max) => {
   };
 };
 
-export {getRandomNumberInRange, getArrayRandomElement, getRandomArrayLength, makeUniqueRandomIntegerGenerator};
+export {
+  getRandomNumberInRange,
+  getArrayRandomElement,
+  getRandomArrayLength,
+  makeUniqueRandomIntegerGenerator
+};

@@ -6,7 +6,6 @@ import {
 } from './util.js';
 
 
-
 const TYPES = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
 const CHECKINS = ['12:00', '13:00', '14:00'];
 const CHECKOUTS = ['12:00', '13:00', '14:00'];
@@ -16,8 +15,8 @@ const PHOTOS = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
 ];
-const MIN_PRICE = 10000;
-const MAX_PRICE = 10000000;
+const MIN_PRICE = 1000;
+const MAX_PRICE = 100000;
 const MIN_ROOMS = 1;
 const MAX_ROOMS = 10;
 const MIN_GUESTS = 1;

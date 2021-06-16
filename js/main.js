@@ -1,5 +1,11 @@
-import {generateAds, ADS_COUNT} from './data.js';
+import {
+  generateAds,
+  ADS_COUNT
+} from './data.js';
+
+import {
+  generateCard
+} from './generator-elems.js';
 
 const datasAds = generateAds(ADS_COUNT);
-console.log(datasAds);
-
+generateCard(datasAds[0]);
