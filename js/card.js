@@ -39,7 +39,7 @@ function generateCard(data) {
   }
 
   // Время выезда и заезда
-    const timeCheckiAndCheckout = card.querySelector('.popup__text--time');
+  const timeCheckiAndCheckout = card.querySelector('.popup__text--time');
   if (!data.offer.checkin || !data.offer.checkout) {
     timeCheckiAndCheckout.remove();
   } else {
@@ -63,23 +63,23 @@ function generateCard(data) {
 
   // Фотографии
   const photo = card.querySelector('.popup__photos');
-  if (data.offer.photos.length <= 0) {
+  if (!data.offer.photos.length) {
     photo.remove();
-  }
-  photo.querySelector('.popup__photo').setAttribute('src', data.offer.photos[0]);
-  for (let i = 1; data.offer.photos.length > photo.children.length; i++) {
-    const newPhoto = photo.querySelector('.popup__photo').cloneNode(true);
-    newPhoto.setAttribute('src', data.offer.photos[i]);
-    photo.appendChild(newPhoto);
+  } else {
+    photo.querySelector('.popup__photo').setAttribute('src', data.offer.photos[0]);
+    for (let i = 1; data.offer.photos.length > photo.children.length; i++) {
+      const newPhoto = photo.querySelector('.popup__photo').cloneNode(true);
+      newPhoto.setAttribute('src', data.offer.photos[i]);
+      photo.appendChild(newPhoto);
+    }
   }
 
   // Аватарка
   const avatar = card.querySelector('.popup__avatar');
-  if (!avatar.getAttribute('src')) {
+  avatar.setAttribute('src', data.author.avatar);
+  avatar.onerror = function() {
     avatar.remove();
-  } else {
-    avatar.setAttribute('src', data.author.avatar);
-  }
+  };
 
   mapCanvas.appendChild(card);
 }
