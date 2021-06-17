@@ -5,7 +5,7 @@ import {
 
 import {
   generateCard
-} from './generator-elems.js';
+} from './card.js';
 
 const datasAds = generateAds(ADS_COUNT);
 generateCard(datasAds[0]);
