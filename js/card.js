@@ -62,24 +62,24 @@ function generateCard(data) {
   card.querySelector('.popup__description').textContent = data.offer.description;
 
   // Фотографии
-  const photo = card.querySelector('.popup__photos');
+  const photos = card.querySelector('.popup__photos');
   if (!data.offer.photos.length) {
-    photo.remove();
+    photos.remove();
   } else {
-    photo.querySelector('.popup__photo').setAttribute('src', data.offer.photos[0]);
-    for (let i = 1; data.offer.photos.length > photo.children.length; i++) {
-      const newPhoto = photo.querySelector('.popup__photo').cloneNode(true);
-      newPhoto.setAttribute('src', data.offer.photos[i]);
-      photo.appendChild(newPhoto);
-    }
+    photos.innerHTML = '';
+    data.offer.photos.forEach(photoSrc => {
+      photos.insertAdjacentHTML('afterend',
+        `<img src=${photoSrc} class="popup__photo" alt="Фотография жилья" width="45" height="40"></img>`);
+    });
   }
 
   // Аватарка
   const avatar = card.querySelector('.popup__avatar');
-  avatar.setAttribute('src', data.author.avatar);
-  avatar.onerror = function() {
+  if (!data.author.avatar.length) {
     avatar.remove();
-  };
+  } else {
+    avatar.setAttribute('src', data.author.avatar);
+  }
 
   mapCanvas.appendChild(card);
 }
