@@ -67,7 +67,7 @@ const generateCard = (data) => {
     photos.remove();
   } else {
     photos.innerHTML = '';
-    data.offer.photos.forEach(photoSrc => {
+    data.offer.photos.forEach((photoSrc) => {
       photos.insertAdjacentHTML('afterend',
         `<img src=${photoSrc} class="popup__photo" alt="Фотография жилья" width="45" height="40"></img>`);
     });

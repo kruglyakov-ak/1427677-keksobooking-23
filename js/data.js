@@ -29,27 +29,23 @@ const ADS_COUNT = 10;
 
 const getUniqueRandomIntegerForUrlAvatar = makeUniqueRandomIntegerGenerator(1, ADS_COUNT);
 
-const createAuthor = () => {
-  return {
-    avatar: `img/avatars/user${getUniqueRandomIntegerForUrlAvatar().toString().padStart(2, '0')}.png`,
-  };
-};
+const createAuthor = () => ({
+  avatar: `img/avatars/user${getUniqueRandomIntegerForUrlAvatar().toString().padStart(2, '0')}.png`,
+});
 
-const createOffer = (lat, lng) => {
-  return {
-    title: 'Милая, уютная квартира в центре Токио.',
-    address: `${lat}, ${lng}`,
-    price: getRandomNumberInRange(MIN_PRICE, MAX_PRICE),
-    type: getArrayRandomElement(TYPES),
-    rooms: getRandomNumberInRange(MIN_ROOMS, MAX_ROOMS),
-    guests: getRandomNumberInRange(MIN_GUESTS, MAX_GUESTS),
-    checkin: getArrayRandomElement(CHECKINS),
-    checkout: getArrayRandomElement(CHECKOUTS),
-    features: getRandomArrayLength(FEATURES),
-    description: 'Самое лучшее жилье в городе!',
-    photos: getRandomArrayLength(PHOTOS),
-  };
-};
+const createOffer = (lat, lng) => ({
+  title: 'Милая, уютная квартира в центре Токио.',
+  address: `${lat}, ${lng}`,
+  price: getRandomNumberInRange(MIN_PRICE, MAX_PRICE),
+  type: getArrayRandomElement(TYPES),
+  rooms: getRandomNumberInRange(MIN_ROOMS, MAX_ROOMS),
+  guests: getRandomNumberInRange(MIN_GUESTS, MAX_GUESTS),
+  checkin: getArrayRandomElement(CHECKINS),
+  checkout: getArrayRandomElement(CHECKOUTS),
+  features: getRandomArrayLength(FEATURES),
+  description: 'Самое лучшее жилье в городе!',
+  photos: getRandomArrayLength(PHOTOS),
+});
 
 const createAd = () => {
   const lat = getRandomNumberInRange(MIN_LATITUDE, MAX_LATITUDE, 5);
