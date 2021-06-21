@@ -1,17 +1,12 @@
-function getRandomNumberInRange(min = 0, max = 1, numberSymbolsAfterComma = 0) {
+const getRandomNumberInRange = (min = 0, max = 1, numberSymbolsAfterComma = 0) => {
   const lower = Math.min(Math.abs(min), Math.abs(max));
   const upper = Math.max(Math.abs(min), Math.abs(max));
   const randomNumber = Math.random() * (upper - lower) + lower;
   return +randomNumber.toFixed(numberSymbolsAfterComma);
-}
+};
 
-function getArrayRandomElement(array) {
-  return array[getRandomNumberInRange(0, array.length - 1)];
-}
-
-function getRandomArrayLength(array) {
-  return array.slice(0, getRandomNumberInRange(1, array.length));
-}
+const getArrayRandomElement = (array) => array[getRandomNumberInRange(0, array.length - 1)];
+const getRandomArrayLength = (array) => array.slice(0, getRandomNumberInRange(1, array.length));
 
 const makeUniqueRandomIntegerGenerator = (min, max) => {
   const previousValues = [];
@@ -29,9 +24,23 @@ const makeUniqueRandomIntegerGenerator = (min, max) => {
   };
 };
 
+const enableElements = (elements) => {
+  elements.forEach((element) => {
+    element.disabled = false;
+  });
+};
+
+const disableElements = (elements) => {
+  elements.forEach((element) => {
+    element.disabled = true;
+  });
+};
+
 export {
   getRandomNumberInRange,
   getArrayRandomElement,
   getRandomArrayLength,
-  makeUniqueRandomIntegerGenerator
+  makeUniqueRandomIntegerGenerator,
+  enableElements,
+  disableElements
 };
