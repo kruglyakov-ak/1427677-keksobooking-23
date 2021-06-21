@@ -24,13 +24,13 @@ const makeUniqueRandomIntegerGenerator = (min, max) => {
   };
 };
 
-const enableElements = (elements) => {
+const enableFormElements = (elements) => {
   elements.forEach((element) => {
     element.disabled = false;
   });
 };
 
-const disableElements = (elements) => {
+const disableFormElements = (elements) => {
   elements.forEach((element) => {
     element.disabled = true;
   });
@@ -41,6 +41,6 @@ export {
   getArrayRandomElement,
   getRandomArrayLength,
   makeUniqueRandomIntegerGenerator,
-  enableElements,
-  disableElements
+  enableFormElements,
+  disableFormElements
 };

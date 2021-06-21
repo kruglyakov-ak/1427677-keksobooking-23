@@ -13,21 +13,21 @@ import {
 } from './map-filters.js';
 
 import {
-  activateCardForm,
-  deactivateCardForm
-} from './card-form.js';
+  activateForm,
+  deactivateForm
+} from './form.js';
 
 const datasAds = generateAds(ADS_COUNT);
 generateCard(datasAds[0]);
 
 const activatePage = () => {
   activateMapFilters();
-  activateCardForm();
+  activateForm();
 };
 
 const deactivatePage = () => {
   deactivateMapFilters();
-  deactivateCardForm();
+  deactivateForm();
 };
 
 deactivatePage();
