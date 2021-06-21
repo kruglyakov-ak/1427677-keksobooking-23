@@ -29,13 +29,13 @@ const ADS_COUNT = 10;
 
 const getUniqueRandomIntegerForUrlAvatar = makeUniqueRandomIntegerGenerator(1, ADS_COUNT);
 
-function createAuthor() {
+const createAuthor = () => {
   return {
     avatar: `img/avatars/user${getUniqueRandomIntegerForUrlAvatar().toString().padStart(2, '0')}.png`,
   };
-}
+};
 
-function createOffer(lat, lng) {
+const createOffer = (lat, lng) => {
   return {
     title: 'Милая, уютная квартира в центре Токио.',
     address: `${lat}, ${lng}`,
@@ -49,9 +49,9 @@ function createOffer(lat, lng) {
     description: 'Самое лучшее жилье в городе!',
     photos: getRandomArrayLength(PHOTOS),
   };
-}
+};
 
-function createAd() {
+const createAd = () => {
   const lat = getRandomNumberInRange(MIN_LATITUDE, MAX_LATITUDE, 5);
   const lng = getRandomNumberInRange(MIN_LONGITUDE, MAX_LONGITUDE, 5);
   const ad = {
@@ -63,15 +63,15 @@ function createAd() {
     },
   };
   return ad;
-}
+};
 
-function generateAds(count) {
+const generateAds = (count) => {
   const ads = [];
   while (ads.length < count) {
     ads.push(createAd());
   }
   return ads;
-}
+};
 
 export {
   generateAds,

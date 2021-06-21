@@ -10,7 +10,7 @@ const offerType = {
   hotel: 'Отель',
 };
 
-function generateCard(data) {
+const generateCard = (data) => {
   const card = cardTemplate.cloneNode(true);
   // Загаловок
   card.querySelector('.popup__title').textContent = data.offer.title;
@@ -27,8 +27,8 @@ function generateCard(data) {
   }
 
   // Тип
-  const offerLable = offerType[data.offer.type];
-  card.querySelector('.popup__type').textContent = offerLable;
+  const offerLabel = offerType[data.offer.type];
+  card.querySelector('.popup__type').textContent = offerLabel;
 
   // Количество комнат и гостей
   const guestRoom = card.querySelector('.popup__text--capacity');
@@ -82,7 +82,7 @@ function generateCard(data) {
   }
 
   mapCanvas.appendChild(card);
-}
+};
 
 export {
   generateCard
