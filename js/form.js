@@ -3,6 +3,12 @@ import {
   disableFormElements
 } from './util.js';
 
+import {
+  inputValidate,
+  selectSynch
+} from './form-validation.js';
+
+
 const form = document.querySelector('.ad-form');
 const formFieldsets = form.querySelectorAll('fieldset');
 
@@ -16,7 +22,13 @@ const deactivateForm = () => {
   disableFormElements(formFieldsets);
 };
 
+const formValidate = () => {
+  inputValidate();
+  selectSynch();
+};
+
 export {
   activateForm,
-  deactivateForm
+  deactivateForm,
+  formValidate
 };

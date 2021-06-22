@@ -36,11 +36,21 @@ const disableFormElements = (elements) => {
   });
 };
 
+const addInputValidationIndicator = (input) => {
+  input.addEventListener('input', () => {
+    if (!input.checkValidity()) {
+      input.style.boxShadow = '0 0 2px 2px red';
+    } else {
+      input.style.boxShadow = '0 0 2px 2px green';
+    }  });
+};
+
 export {
   getRandomNumberInRange,
   getArrayRandomElement,
   getRandomArrayLength,
   makeUniqueRandomIntegerGenerator,
   enableFormElements,
-  disableFormElements
+  disableFormElements,
+  addInputValidationIndicator
 };

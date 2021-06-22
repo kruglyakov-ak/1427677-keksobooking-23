@@ -14,7 +14,8 @@ import {
 
 import {
   activateForm,
-  deactivateForm
+  deactivateForm,
+  formValidate
 } from './form.js';
 
 const datasAds = generateAds(ADS_COUNT);
@@ -32,3 +33,4 @@ const deactivatePage = () => {
 
 deactivatePage();
 activatePage();
+formValidate();
