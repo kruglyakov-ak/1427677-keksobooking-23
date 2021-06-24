@@ -4,8 +4,7 @@ import {
 } from './util.js';
 
 import {
-  inputValidate,
-  selectSynch
+  inputValidate
 } from './form-validation.js';
 
 
@@ -24,7 +23,6 @@ const deactivateForm = () => {
 
 const formValidate = () => {
   inputValidate();
-  selectSynch();
 };
 
 export {
