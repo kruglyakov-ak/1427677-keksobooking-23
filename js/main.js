@@ -18,7 +18,6 @@ import {
 } from './form.js';
 
 import {
-  validateInput
 } from './form-validation.js';
 
 const datasAds = generateAds(ADS_COUNT);
@@ -36,4 +35,3 @@ const deactivatePage = () => {
 
 deactivatePage();
 activatePage();
-validateInput();
