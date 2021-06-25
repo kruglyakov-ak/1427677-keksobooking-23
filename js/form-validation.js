@@ -11,17 +11,17 @@ const priceInput = document.querySelector('#price');
 addInputValidationIndicator(titleInput);
 addInputValidationIndicator(priceInput);
 
-const roomNumberList = document.querySelector('#room_number');
-const capacityList = document.querySelector('#capacity');
+const roomNumberSelect = document.querySelector('#room_number');
+const capacitySelect = document.querySelector('#capacity');
 const errorText = 'Количество гостей не может превышать количества комнат;\n100 комнат — «не для гостей».';
 
-const addRoomsAndCapacityListener = (element) => {
-  const capacity = +capacityList.value;
-  const rooms = +roomNumberList.value;
+const compareRoomsAndCapacityValue = (element) => {
+  const capacity = +capacitySelect.value;
+  const rooms = +roomNumberSelect.value;
   if (rooms !== ROOMS_VALUE_MAX && capacity === GUESTS_VALUE_MIN) {
     element.setCustomValidity(errorText);
   } else if (rooms === ROOMS_VALUE_MAX && capacity !== GUESTS_VALUE_MIN) {
-    roomNumberList.setCustomValidity(errorText);
+    element.setCustomValidity(errorText);
   } else if (rooms < capacity) {
     element.setCustomValidity(errorText);
   } else {
@@ -29,12 +29,16 @@ const addRoomsAndCapacityListener = (element) => {
   }
 };
 
-addRoomsAndCapacityListener(roomNumberList);
-roomNumberList.addEventListener('change', () => addRoomsAndCapacityListener());
-capacityList.addEventListener('change', () => addRoomsAndCapacityListener());
+compareRoomsAndCapacityValue(roomNumberSelect);
+roomNumberSelect.addEventListener('change', (evt) => {
+  compareRoomsAndCapacityValue(evt.target);
+});
+capacitySelect.addEventListener('change', (evt) => {
+  compareRoomsAndCapacityValue(evt.target);
+});
 
-const typeList = document.querySelector('#type');
-const compareValues = (select) => {
+const typeSelect = document.querySelector('#type');
+const compareTypeValues = (select) => {
   if (select.value === 'bungalow') {
     priceInput.setAttribute('min', 0);
     priceInput.setAttribute('placeholder', 0);
@@ -53,9 +57,9 @@ const compareValues = (select) => {
   }
 };
 
-compareValues(typeList);
-typeList.addEventListener('change', (evt) => {
-  compareValues(evt.target);
+compareTypeValues(typeSelect);
+typeSelect.addEventListener('change', (evt) => {
+  compareTypeValues(evt.target);
 });
 
 const timein = document.querySelector('#timein');
