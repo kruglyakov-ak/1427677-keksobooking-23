@@ -2,34 +2,38 @@ import {
   addInputValidationIndicator
 } from './util.js';
 
+const GUESTS_VALUE_MIN = 0;
+const ROOMS_VALUE_MAX = 100;
+
 const titleInput = document.querySelector('#title');
 const priceInput = document.querySelector('#price');
 
 const roomNumberList = document.querySelector('#room_number');
 const capacityList = document.querySelector('#capacity');
-const errorText = '1 комната — «для 1 гостя»;\n2 комнаты — «для 2 гостей» или «для 1 гостя»;\n3 комнаты — «для 3 гостей», «для 2 гостей» или «для 1 гостя»;\n100 комнат — «не для гостей».';
+const errorText = 'Количество гостей не может превышать количества комнат;\n100 комнат — «не для гостей».';
 
-const validateRoomNumber = () => {
-  roomNumberList.addEventListener('change', (evt) => {
-    if (+evt.target.value !== 100 && +capacityList.value === 0) {
+const validateCapacity = () => {
+  roomNumberList.addEventListener('change', () => {
+    const capacity = +capacityList.value;
+    const rooms = +roomNumberList.value;
+    if (rooms !== ROOMS_VALUE_MAX && capacity === GUESTS_VALUE_MIN) {
       roomNumberList.setCustomValidity(errorText);
-    } else if (+evt.target.value === 100 && +capacityList.value !== 0) {
+    } else if (rooms === ROOMS_VALUE_MAX && capacity !== GUESTS_VALUE_MIN) {
       roomNumberList.setCustomValidity(errorText);
-    } else if (+evt.target.value < +capacityList.value) {
+    } else if (rooms < capacity) {
       roomNumberList.setCustomValidity(errorText);
     } else {
       roomNumberList.setCustomValidity('');
     }
   });
-};
-
-const validateCapacity = () => {
-  capacityList.addEventListener('change', (evt) => {
-    if (+evt.target.value !== 0 && +roomNumberList.value === 100) {
+  capacityList.addEventListener('change', () => {
+    const capacity = +capacityList.value;
+    const rooms = +roomNumberList.value;
+    if (capacity !== GUESTS_VALUE_MIN && rooms === ROOMS_VALUE_MAX) {
       capacityList.setCustomValidity(errorText);
-    } else if (+evt.target.value === 0 && +roomNumberList.value !== 100) {
+    } else if (capacity === GUESTS_VALUE_MIN && rooms !== ROOMS_VALUE_MAX) {
       capacityList.setCustomValidity(errorText);
-    } else if (+evt.target.value > +roomNumberList.value) {
+    } else if (capacity > rooms) {
       capacityList.setCustomValidity(errorText);
     } else {
       capacityList.setCustomValidity('');
@@ -37,14 +41,12 @@ const validateCapacity = () => {
   });
 };
 
-const inputValidate = () => {
+const validateInput = () => {
   addInputValidationIndicator(titleInput);
   addInputValidationIndicator(priceInput);
-  validateRoomNumber();
   validateCapacity();
 };
 
-
 export {
-  inputValidate
+  validateInput
 };

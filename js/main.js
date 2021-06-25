@@ -14,9 +14,12 @@ import {
 
 import {
   activateForm,
-  deactivateForm,
-  formValidate
+  deactivateForm
 } from './form.js';
+
+import {
+  validateInput
+} from './form-validation.js';
 
 const datasAds = generateAds(ADS_COUNT);
 generateCard(datasAds[0]);
@@ -33,4 +36,4 @@ const deactivatePage = () => {
 
 deactivatePage();
 activatePage();
-formValidate();
+validateInput();
