@@ -4,6 +4,11 @@ import {
 
 const GUESTS_VALUE_MIN = 0;
 const ROOMS_VALUE_MAX = 100;
+const BUNGALOW_PRICE = 0;
+const FLAT_PRICE = 1000;
+const HOTEL_PRICE = 3000;
+const HOUSE_PRICE = 5000;
+const PALACE_PRICE = 10000;
 
 const titleInput = document.querySelector('#title');
 const priceInput = document.querySelector('#price');
@@ -15,7 +20,7 @@ const roomNumberSelect = document.querySelector('#room_number');
 const capacitySelect = document.querySelector('#capacity');
 const errorText = 'Количество гостей не может превышать количества комнат;\n100 комнат — «не для гостей».';
 
-const compareRoomsAndCapacityValue = (element) => {
+const addCustomValidityErrorForCapacityAndRooms = (element) => {
   const capacity = +capacitySelect.value;
   const rooms = +roomNumberSelect.value;
   if (rooms !== ROOMS_VALUE_MAX && capacity === GUESTS_VALUE_MIN) {
@@ -29,37 +34,37 @@ const compareRoomsAndCapacityValue = (element) => {
   }
 };
 
-compareRoomsAndCapacityValue(roomNumberSelect);
+addCustomValidityErrorForCapacityAndRooms(roomNumberSelect);
 roomNumberSelect.addEventListener('change', (evt) => {
-  compareRoomsAndCapacityValue(evt.target);
+  addCustomValidityErrorForCapacityAndRooms(evt.target);
 });
 capacitySelect.addEventListener('change', (evt) => {
-  compareRoomsAndCapacityValue(evt.target);
+  addCustomValidityErrorForCapacityAndRooms(evt.target);
 });
 
+const setAttributeForPriceInput = (price) => {
+  priceInput.setAttribute('min', price);
+  priceInput.setAttribute('placeholder', price);
+};
+
 const typeSelect = document.querySelector('#type');
-const compareTypeValues = (select) => {
+const setPriceDependingOnTheType = (select) => {
   if (select.value === 'bungalow') {
-    priceInput.setAttribute('min', 0);
-    priceInput.setAttribute('placeholder', 0);
+    setAttributeForPriceInput(BUNGALOW_PRICE);
   } else if (select.value === 'flat') {
-    priceInput.setAttribute('min', 1000);
-    priceInput.setAttribute('placeholder', 1000);
+    setAttributeForPriceInput(FLAT_PRICE);
   } else if (select.value === 'hotel') {
-    priceInput.setAttribute('min', 3000);
-    priceInput.setAttribute('placeholder', 3000);
+    setAttributeForPriceInput(HOTEL_PRICE);
   } else if (select.value === 'house') {
-    priceInput.setAttribute('min', 5000);
-    priceInput.setAttribute('placeholder', 5000);
+    setAttributeForPriceInput(HOUSE_PRICE);
   } else if (select.value === 'palace') {
-    priceInput.setAttribute('min', 10000);
-    priceInput.setAttribute('placeholder', 10000);
+    setAttributeForPriceInput(PALACE_PRICE);
   }
 };
 
-compareTypeValues(typeSelect);
+setPriceDependingOnTheType(typeSelect);
 typeSelect.addEventListener('change', (evt) => {
-  compareTypeValues(evt.target);
+  setPriceDependingOnTheType(evt.target);
 });
 
 const timein = document.querySelector('#timein');
