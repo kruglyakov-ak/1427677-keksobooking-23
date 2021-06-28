@@ -64,3 +64,18 @@ timein.addEventListener('change', (evt) => {
 timeout.addEventListener('change', (evt) => {
   timein.value = evt.target.value;
 });
+
+const addressInput = document.querySelector('#address');
+addressInput.setAttribute('readonly', '');
+const addAddressFromMap = (address) => {
+  addressInput.value = `${address.lat.toFixed(5)}, ${address.lng.toFixed(5)}`;
+};
+
+const resetButton = document.querySelector('.ad-form__reset');
+const resetAddress = () => {
+
+}
+
+export {
+  addAddressFromMap
+};
