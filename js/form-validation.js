@@ -4,12 +4,13 @@ import {
 
 const GUESTS_VALUE_MIN = 0;
 const ROOMS_VALUE_MAX = 100;
-const BUNGALOW_PRICE = 0;
-const FLAT_PRICE = 1000;
-const HOTEL_PRICE = 3000;
-const HOUSE_PRICE = 5000;
-const PALACE_PRICE = 10000;
-
+const propertyPriceByType = {
+  'palace': 10000,
+  'flat': 1000,
+  'bungalow': 0,
+  'house': 5000,
+  'hotel': 3000,
+};
 const titleInput = document.querySelector('#title');
 const priceInput = document.querySelector('#price');
 
@@ -19,15 +20,15 @@ addInputValidationIndicator(priceInput);
 const roomNumberSelect = document.querySelector('#room_number');
 const capacitySelect = document.querySelector('#capacity');
 const errorText = 'Количество гостей не может превышать количества комнат;\n100 комнат — «не для гостей».';
+const capacity = +capacitySelect.value;
+const rooms = +roomNumberSelect.value;
+const isRoomsInvalid = rooms !== ROOMS_VALUE_MAX && capacity === GUESTS_VALUE_MIN;
+const isCapacityInvalid = rooms === ROOMS_VALUE_MAX && capacity !== GUESTS_VALUE_MIN;
+const isCompareInvalid = rooms < capacity;
+const isInvalid = isRoomsInvalid || isCapacityInvalid || isCompareInvalid;
 
 const addCustomValidityErrorForCapacityAndRooms = (element) => {
-  const capacity = +capacitySelect.value;
-  const rooms = +roomNumberSelect.value;
-  if (rooms !== ROOMS_VALUE_MAX && capacity === GUESTS_VALUE_MIN) {
-    element.setCustomValidity(errorText);
-  } else if (rooms === ROOMS_VALUE_MAX && capacity !== GUESTS_VALUE_MIN) {
-    element.setCustomValidity(errorText);
-  } else if (rooms < capacity) {
+  if (isInvalid) {
     element.setCustomValidity(errorText);
   } else {
     element.setCustomValidity('');
@@ -42,24 +43,12 @@ capacitySelect.addEventListener('change', (evt) => {
   addCustomValidityErrorForCapacityAndRooms(evt.target);
 });
 
-const setAttributeForPriceInput = (price) => {
+const typeSelect = document.querySelector('#type');
+
+const setPriceDependingOnTheType = (select) => {
+  const price = propertyPriceByType[select.value];
   priceInput.setAttribute('min', price);
   priceInput.setAttribute('placeholder', price);
-};
-
-const typeSelect = document.querySelector('#type');
-const setPriceDependingOnTheType = (select) => {
-  if (select.value === 'bungalow') {
-    setAttributeForPriceInput(BUNGALOW_PRICE);
-  } else if (select.value === 'flat') {
-    setAttributeForPriceInput(FLAT_PRICE);
-  } else if (select.value === 'hotel') {
-    setAttributeForPriceInput(HOTEL_PRICE);
-  } else if (select.value === 'house') {
-    setAttributeForPriceInput(HOUSE_PRICE);
-  } else if (select.value === 'palace') {
-    setAttributeForPriceInput(PALACE_PRICE);
-  }
 };
 
 setPriceDependingOnTheType(typeSelect);
