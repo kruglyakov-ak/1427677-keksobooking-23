@@ -2,12 +2,27 @@ const mapCanvas = document.querySelector('#map-canvas');
 const cardTemplate = document
   .querySelector('#card')
   .content.querySelector('.popup');
-const offerType = {
-  palace: 'Дворец',
-  flat: 'Квартира',
-  bungalow: 'Бунгало',
-  house: 'Дом',
-  hotel: 'Отель',
+const propertyOffer = {
+  'palace': {
+    label: 'Дворец',
+    price: 10000,
+  },
+  'flat': {
+    label: 'Квартира',
+    price: 1000,
+  },
+  'bungalow': {
+    label: 'Бунгало',
+    price: 0,
+  },
+  'house': {
+    label: 'Дом',
+    price: 5000,
+  },
+  'hotel': {
+    label: 'Отель',
+    price: 3000,
+  },
 };
 
 const generateCard = (data) => {
@@ -27,7 +42,7 @@ const generateCard = (data) => {
   }
 
   // Тип
-  const offerLabel = offerType[data.offer.type];
+  const offerLabel = propertyOffer[data.offer.type].label;
   card.querySelector('.popup__type').textContent = offerLabel;
 
   // Количество комнат и гостей
@@ -85,5 +100,6 @@ const generateCard = (data) => {
 };
 
 export {
-  generateCard
+  generateCard,
+  propertyOffer
 };

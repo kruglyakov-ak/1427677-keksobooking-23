@@ -2,15 +2,13 @@ import {
   addInputValidationIndicator
 } from './util.js';
 
+import {
+  propertyOffer
+} from './card.js';
+
 const GUESTS_VALUE_MIN = 0;
 const ROOMS_VALUE_MAX = 100;
-const propertyPriceByType = {
-  'palace': 10000,
-  'flat': 1000,
-  'bungalow': 0,
-  'house': 5000,
-  'hotel': 3000,
-};
+
 const titleInput = document.querySelector('#title');
 const priceInput = document.querySelector('#price');
 
@@ -46,7 +44,7 @@ capacitySelect.addEventListener('change', (evt) => {
 const typeSelect = document.querySelector('#type');
 
 const setPriceDependingOnTheType = (select) => {
-  const price = propertyPriceByType[select.value];
+  const price = propertyOffer[select.value].price;
   priceInput.setAttribute('min', price);
   priceInput.setAttribute('placeholder', price);
 };
