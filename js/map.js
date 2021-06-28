@@ -20,11 +20,11 @@ import {
   generateCard
 } from './card.js';
 
-const COORDINATES = {
+const START_COORDINATES = {
   lat: 35.681700,
   lng: 139.753891,
 };
-const ZOOM_LEVEL = 12;
+const START_ZOOM_LEVEL = 12;
 
 const activatePage = () => {
   activateMapFilters();
@@ -42,10 +42,7 @@ const map = L.map('map-canvas')
   .on('load', () => {
     activatePage();
   })
-  .setView({
-    lat: COORDINATES.lat,
-    lng: COORDINATES.lng,
-  }, ZOOM_LEVEL);
+  .setView(START_COORDINATES, START_ZOOM_LEVEL);
 
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -62,10 +59,7 @@ const mainPin = L.icon(
   });
 
 const mainMarker = L.marker(
-  {
-    lat: COORDINATES.lat,
-    lng: COORDINATES.lng,
-  },
+  START_COORDINATES,
   {
     draggable: true,
     icon: mainPin,
@@ -80,18 +74,13 @@ mainMarker.on('moveend', (evt) => {
 const resetButton = document.querySelector('.ad-form__reset');
 
 resetButton.addEventListener('click', () => {
-  mainMarker.setLatLng({
-    lat: COORDINATES.lat,
-    lng: COORDINATES.lng,
-  });
-
-  map.setView({
-    lat: COORDINATES.lat,
-    lng: COORDINATES.lng,
-  }, ZOOM_LEVEL);
+  mainMarker.setLatLng(START_COORDINATES);
+  map.setView(START_COORDINATES, START_ZOOM_LEVEL);
 });
 
-generatedAds.forEach((generatedAd) => {
+const adMarkerGroup = L.layerGroup().addTo(map);
+
+const createAdMarkers = (ad) => {
   const adIcon = L.icon({
     iconUrl: './img/pin.svg',
     iconSize: [40, 40],
@@ -100,15 +89,24 @@ generatedAds.forEach((generatedAd) => {
 
   const adMarker = L.marker(
     {
-      lat: generatedAd.location.lat,
-      lng: generatedAd.location.lng,
+      lat: ad.location.lat,
+      lng: ad.location.lng,
     },
     {
-      adIcon,
+      icon: adIcon,
     },
   );
 
   adMarker
-    .addTo(map)
-    .bindPopup(generateCard(generatedAd));
+    .addTo(adMarkerGroup)
+    .bindPopup(
+      generateCard(ad),
+      {
+        keepInView: true,
+      },
+    );
+};
+
+generatedAds.forEach((generatedAd) => {
+  createAdMarkers(generatedAd);
 });
