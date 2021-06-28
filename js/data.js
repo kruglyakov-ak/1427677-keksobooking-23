@@ -69,7 +69,8 @@ const generateAds = (count) => {
   return ads;
 };
 
+const generatedAds = generateAds(ADS_COUNT);
+
 export {
-  generateAds,
-  ADS_COUNT
+  generatedAds
 };

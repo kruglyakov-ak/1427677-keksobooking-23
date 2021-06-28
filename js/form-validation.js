@@ -71,11 +71,6 @@ const addAddressFromMap = (address) => {
   addressInput.value = `${address.lat.toFixed(5)}, ${address.lng.toFixed(5)}`;
 };
 
-const resetButton = document.querySelector('.ad-form__reset');
-const resetAddress = () => {
-
-}
-
 export {
   addAddressFromMap
 };

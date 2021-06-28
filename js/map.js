@@ -12,11 +12,19 @@ import {
   addAddressFromMap
 } from './form-validation.js';
 
+import {
+  generatedAds
+} from './data.js';
+
+import {
+  generateCard
+} from './card.js';
+
 const COORDINATES = {
   lat: 35.681700,
   lng: 139.753891,
 };
-const ZOOM_LEVEL = 10;
+const ZOOM_LEVEL = 12;
 
 const activatePage = () => {
   activateMapFilters();
@@ -81,4 +89,26 @@ resetButton.addEventListener('click', () => {
     lat: COORDINATES.lat,
     lng: COORDINATES.lng,
   }, ZOOM_LEVEL);
+});
+
+generatedAds.forEach((generatedAd) => {
+  const adIcon = L.icon({
+    iconUrl: './img/pin.svg',
+    iconSize: [40, 40],
+    iconAnchor: [20, 40],
+  });
+
+  const adMarker = L.marker(
+    {
+      lat: generatedAd.location.lat,
+      lng: generatedAd.location.lng,
+    },
+    {
+      adIcon,
+    },
+  );
+
+  adMarker
+    .addTo(map)
+    .bindPopup(generateCard(generatedAd));
 });

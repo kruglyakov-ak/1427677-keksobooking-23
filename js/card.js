@@ -1,4 +1,3 @@
-const mapCanvas = document.querySelector('#map-canvas');
 const cardTemplate = document
   .querySelector('#card')
   .content.querySelector('.popup');
@@ -96,7 +95,7 @@ const generateCard = (data) => {
     avatar.setAttribute('src', data.author.avatar);
   }
 
-  mapCanvas.appendChild(card);
+  return card;
 };
 
 export {
