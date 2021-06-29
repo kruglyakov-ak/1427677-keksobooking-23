@@ -9,7 +9,7 @@ import {
 } from './form.js';
 
 import {
-  addAddressFromMap
+  setAddressValue
 } from './form-validation.js';
 
 import {
@@ -68,7 +68,7 @@ const mainMarker = L.marker(
 mainMarker.addTo(map);
 mainMarker.on('moveend', (evt) => {
   const address = evt.target.getLatLng();
-  addAddressFromMap(address);
+  setAddressValue(address);
 });
 
 const resetButton = document.querySelector('.ad-form__reset');
