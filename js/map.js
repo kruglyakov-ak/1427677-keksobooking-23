@@ -1,16 +1,6 @@
 import {
-  activateMapFilters,
-  deactivateMapFilters
-} from './map-filters.js';
-
-import {
-  activateForm,
-  deactivateForm
-} from './form.js';
-
-import {
   setAddressValue
-} from './form-validation.js';
+} from './form.js';
 
 import {
   generatedAds
@@ -25,23 +15,18 @@ const START_COORDINATES = {
   lng: 139.753891,
 };
 const START_ZOOM_LEVEL = 12;
-
-const activatePage = () => {
-  activateMapFilters();
-  activateForm();
+const MAIN_PIN = {
+  iconUrl: './img/main-pin.svg',
+  iconSize: [52, 52],
+  iconAnchor: [26, 52],
 };
-
-const deactivatePage = () => {
-  deactivateMapFilters();
-  deactivateForm();
+const AD_PIN = {
+  iconUrl: './img/pin.svg',
+  iconSize: [40, 40],
+  iconAnchor: [20, 40],
 };
-
-deactivatePage();
 
 const map = L.map('map-canvas')
-  .on('load', () => {
-    activatePage();
-  })
   .setView(START_COORDINATES, START_ZOOM_LEVEL);
 
 L.tileLayer(
@@ -51,12 +36,7 @@ L.tileLayer(
   },
 ).addTo(map);
 
-const mainPin = L.icon(
-  {
-    iconUrl: './img/main-pin.svg',
-    iconSize: [52, 52],
-    iconAnchor: [26, 52],
-  });
+const mainPin = L.icon(MAIN_PIN);
 
 const mainMarker = L.marker(
   START_COORDINATES,
@@ -81,11 +61,7 @@ resetButton.addEventListener('click', () => {
 const adMarkerGroup = L.layerGroup().addTo(map);
 
 const createAdMarkers = (ad) => {
-  const adIcon = L.icon({
-    iconUrl: './img/pin.svg',
-    iconSize: [40, 40],
-    iconAnchor: [20, 40],
-  });
+  const adPin = L.icon(AD_PIN);
 
   const adMarker = L.marker(
     {
@@ -93,7 +69,7 @@ const createAdMarkers = (ad) => {
       lng: ad.location.lng,
     },
     {
-      icon: adIcon,
+      icon: adPin,
     },
   );
 
@@ -110,3 +86,10 @@ const createAdMarkers = (ad) => {
 generatedAds.forEach((generatedAd) => {
   createAdMarkers(generatedAd);
 });
+
+export {
+  START_COORDINATES,
+  START_ZOOM_LEVEL,
+  map,
+  mainMarker
+};
