@@ -8,13 +8,6 @@ import {
   propertyOffer
 } from './card.js';
 
-import {
-  START_COORDINATES,
-  START_ZOOM_LEVEL,
-  mainMarker,
-  map
-} from './map.js';
-
 const form = document.querySelector('.ad-form');
 const formFieldsets = form.querySelectorAll('fieldset');
 
@@ -93,22 +86,19 @@ addressInput.setAttribute('readonly', '');
 const setAddressValue = (address) => {
   addressInput.value = `${address.lat.toFixed(DIGITS_AFTER_POINT)}, ${address.lng.toFixed(DIGITS_AFTER_POINT)}`;
 };
-setAddressValue(START_COORDINATES);
 
 const resetButton = document.querySelector('.ad-form__reset');
 
 resetButton.addEventListener('click', (evt) => {
   evt.preventDefault();
   form.reset();
-  setAddressValue(START_COORDINATES);
   setPriceByType(typeSelect);
   validateCapacityAndRooms(roomNumberSelect);
-  mainMarker.setLatLng(START_COORDINATES);
-  map.setView(START_COORDINATES, START_ZOOM_LEVEL);
 });
 
 export {
   activateForm,
   deactivateForm,
-  setAddressValue
+  setAddressValue,
+  resetButton
 };

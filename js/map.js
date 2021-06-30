@@ -1,14 +1,22 @@
 import {
-  setAddressValue
-} from './form.js';
-
-import {
   generatedAds
 } from './data.js';
 
 import {
   generateCard
 } from './card.js';
+
+import {
+  setAddressValue,
+  activateForm,
+  deactivateForm,
+  resetButton
+} from './form.js';
+
+import {
+  activateMapFilters,
+  deactivateMapFilters
+} from './map-filters.js';
 
 const START_COORDINATES = {
   lat: 35.681700,
@@ -26,7 +34,19 @@ const AD_PIN = {
   iconAnchor: [20, 40],
 };
 
+const activatePage = () => {
+  activateMapFilters();
+  activateForm();
+};
+
+const deactivatePage = () => {
+  deactivateMapFilters();
+  deactivateForm();
+};
+
+deactivatePage();
 const map = L.map('map-canvas')
+  .on('load', activatePage)
   .setView(START_COORDINATES, START_ZOOM_LEVEL);
 
 L.tileLayer(
@@ -46,14 +66,14 @@ const mainMarker = L.marker(
   },
 );
 mainMarker.addTo(map);
+setAddressValue(START_COORDINATES);
 mainMarker.on('moveend', (evt) => {
   const address = evt.target.getLatLng();
   setAddressValue(address);
 });
 
-const resetButton = document.querySelector('.ad-form__reset');
-
 resetButton.addEventListener('click', () => {
+  setAddressValue(START_COORDINATES);
   mainMarker.setLatLng(START_COORDINATES);
   map.setView(START_COORDINATES, START_ZOOM_LEVEL);
 });
@@ -86,10 +106,3 @@ const createAdMarkers = (ad) => {
 generatedAds.forEach((generatedAd) => {
   createAdMarkers(generatedAd);
 });
-
-export {
-  START_COORDINATES,
-  START_ZOOM_LEVEL,
-  map,
-  mainMarker
-};

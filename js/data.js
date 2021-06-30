@@ -5,7 +5,6 @@ import {
   makeUniqueRandomIntegerGenerator
 } from './util.js';
 
-
 const TYPES = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
 const CHECKINS = ['12:00', '13:00', '14:00'];
 const CHECKOUTS = ['12:00', '13:00', '14:00'];
