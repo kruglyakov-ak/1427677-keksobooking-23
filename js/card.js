@@ -24,7 +24,7 @@ const propertyOffer = {
   },
 };
 
-const generateCard = (data) => {
+const createCard = (data) => {
   const card = cardTemplate.cloneNode(true);
   // Загаловок
   card.querySelector('.popup__title').textContent = data.offer.title;
@@ -99,6 +99,6 @@ const generateCard = (data) => {
 };
 
 export {
-  generateCard,
+  createCard,
   propertyOffer
 };

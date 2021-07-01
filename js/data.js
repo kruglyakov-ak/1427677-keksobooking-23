@@ -60,16 +60,7 @@ const createAd = () => {
   return ad;
 };
 
-const generateAds = (count) => {
-  const ads = [];
-  while (ads.length < count) {
-    ads.push(createAd());
-  }
-  return ads;
-};
-
-const generatedAds = generateAds(ADS_COUNT);
-
 export {
-  generatedAds
+  createAd,
+  ADS_COUNT
 };

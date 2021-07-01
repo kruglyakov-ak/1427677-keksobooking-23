@@ -8,6 +8,11 @@ import {
   propertyOffer
 } from './card.js';
 
+const GUESTS_VALUE_MIN = 0;
+const ROOMS_VALUE_MAX = 100;
+const ERROR_TEXT = 'Количество гостей не может превышать количества комнат;\n100 комнат — «не для гостей».';
+const DIGITS_AFTER_POINT = 5;
+
 const form = document.querySelector('.ad-form');
 const formFieldsets = form.querySelectorAll('fieldset');
 
@@ -20,11 +25,6 @@ const deactivateForm = () => {
   form.classList.add('ad-form--disabled');
   disableFormElements(formFieldsets);
 };
-
-const GUESTS_VALUE_MIN = 0;
-const ROOMS_VALUE_MAX = 100;
-const ERROR_TEXT = 'Количество гостей не может превышать количества комнат;\n100 комнат — «не для гостей».';
-const DIGITS_AFTER_POINT = 5;
 
 const titleInput = document.querySelector('#title');
 const priceInput = document.querySelector('#price');
