@@ -4,9 +4,13 @@ import {
   addInputValidationIndicator
 } from './util.js';
 
+import { offerData } from './data.js';
+
 import {
-  propertyOffer
-} from './card.js';
+  map,
+  resetMap,
+  START_COORDINATES
+} from './map.js';
 
 const GUESTS_VALUE_MIN = 0;
 const ROOMS_VALUE_MAX = 100;
@@ -60,7 +64,7 @@ capacitySelect.addEventListener('change', (evt) => {
 const typeSelect = document.querySelector('#type');
 
 const setPriceByType = (select) => {
-  const price = propertyOffer[select.value].price;
+  const price = offerData[select.value].price;
   priceInput.setAttribute('min', price);
   priceInput.setAttribute('placeholder', price);
 };
@@ -94,11 +98,15 @@ resetButton.addEventListener('click', (evt) => {
   form.reset();
   setPriceByType(typeSelect);
   validateCapacityAndRooms(roomNumberSelect);
+  if (map) {
+    setAddressValue(START_COORDINATES);
+    resetMap();
+  }
 });
 
 export {
   activateForm,
   deactivateForm,
   setAddressValue,
-  resetButton
+  addressInput
 };

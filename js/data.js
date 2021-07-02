@@ -25,7 +25,28 @@ const MAX_LATITUDE = 35.7;
 const MIN_LONGITUDE = 139.7;
 const MAX_LONGITUDE = 139.8;
 const ADS_COUNT = 10;
-
+const offerData = {
+  'palace': {
+    label: 'Дворец',
+    price: 10000,
+  },
+  'flat': {
+    label: 'Квартира',
+    price: 1000,
+  },
+  'bungalow': {
+    label: 'Бунгало',
+    price: 0,
+  },
+  'house': {
+    label: 'Дом',
+    price: 5000,
+  },
+  'hotel': {
+    label: 'Отель',
+    price: 3000,
+  },
+};
 const getUniqueRandomIntegerForUrlAvatar = makeUniqueRandomIntegerGenerator(1, ADS_COUNT);
 
 const createAuthor = () => ({
@@ -60,7 +81,15 @@ const createAd = () => {
   return ad;
 };
 
+const createAds = () => {
+  const ads = [];
+  while (ads.length < ADS_COUNT) {
+    ads.push(createAd());
+  }
+  return ads;
+};
+
 export {
-  createAd,
-  ADS_COUNT
+  offerData,
+  createAds
 };

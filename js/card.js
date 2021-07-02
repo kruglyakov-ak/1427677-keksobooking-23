@@ -1,28 +1,8 @@
+import { offerData } from './data.js';
+
 const cardTemplate = document
   .querySelector('#card')
   .content.querySelector('.popup');
-const propertyOffer = {
-  'palace': {
-    label: 'Дворец',
-    price: 10000,
-  },
-  'flat': {
-    label: 'Квартира',
-    price: 1000,
-  },
-  'bungalow': {
-    label: 'Бунгало',
-    price: 0,
-  },
-  'house': {
-    label: 'Дом',
-    price: 5000,
-  },
-  'hotel': {
-    label: 'Отель',
-    price: 3000,
-  },
-};
 
 const createCard = (data) => {
   const card = cardTemplate.cloneNode(true);
@@ -41,7 +21,7 @@ const createCard = (data) => {
   }
 
   // Тип
-  const offerLabel = propertyOffer[data.offer.type].label;
+  const offerLabel = offerData[data.offer.type].label;
   card.querySelector('.popup__type').textContent = offerLabel;
 
   // Количество комнат и гостей
@@ -99,6 +79,5 @@ const createCard = (data) => {
 };
 
 export {
-  createCard,
-  propertyOffer
+  createCard
 };

@@ -1,7 +1,8 @@
 import {
   setAddressValue,
-  resetButton
+  addressInput
 } from './form.js';
+import { createCard } from './card.js';
 
 const START_COORDINATES = {
   lat: 35.681700,
@@ -18,49 +19,18 @@ const AD_PIN = {
   iconSize: [40, 40],
   iconAnchor: [20, 40],
 };
+const map = L.map('map-canvas');
+const mainPin = L.icon(MAIN_PIN);
+const mainMarker = L.marker(
+  START_COORDINATES,
+  {
+    draggable: true,
+    icon: mainPin,
+  },
+);
 
-const addMap = (activatePage, deactivatePage) => {
-  deactivatePage();
-  const map = L.map('map-canvas')
-    .on('load', () => {
-      activatePage();
-    })
-    .setView(START_COORDINATES, START_ZOOM_LEVEL);
-
-  L.tileLayer(
-    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-    {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    },
-  ).addTo(map);
-
-  const mainPin = L.icon(MAIN_PIN);
-
-  const mainMarker = L.marker(
-    START_COORDINATES,
-    {
-      draggable: true,
-      icon: mainPin,
-    },
-  );
-  mainMarker.addTo(map);
-  setAddressValue(START_COORDINATES);
-  mainMarker.on('moveend', (evt) => {
-    const address = evt.target.getLatLng();
-    setAddressValue(address);
-  });
-
-  resetButton.addEventListener('click', () => {
-    setAddressValue(START_COORDINATES);
-    mainMarker.setLatLng(START_COORDINATES);
-    map.setView(START_COORDINATES, START_ZOOM_LEVEL);
-  });
-  return map;
-};
-
-const addMarkers = (map, location, card) => {
+const addMarkers = (location, card) => {
   const adMarkerGroup = L.layerGroup().addTo(map);
-
   const adPin = L.icon(AD_PIN);
 
   const adMarker = L.marker(
@@ -80,7 +50,44 @@ const addMarkers = (map, location, card) => {
     );
 };
 
+const addMap = (data, onLoadCallback) => {
+  map.on('load', () => {
+    onLoadCallback();
+  })
+    .setView(START_COORDINATES, START_ZOOM_LEVEL);
+
+  L.tileLayer(
+    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    },
+  ).addTo(map);
+
+  mainMarker.addTo(map);
+
+  if (addressInput) {
+    setAddressValue(START_COORDINATES);
+    mainMarker.on('moveend', (evt) => {
+      const address = evt.target.getLatLng();
+      setAddressValue(address);
+    });
+  }
+
+  data.forEach((ad) => {
+    const location = ad.location;
+    const card = createCard(ad);
+    addMarkers(location, card);
+  });
+};
+
+const resetMap = () => {
+  mainMarker.setLatLng(START_COORDINATES);
+  map.setView(START_COORDINATES, START_ZOOM_LEVEL);
+};
+
 export {
+  START_COORDINATES,
+  resetMap,
   addMap,
-  addMarkers
+  map
 };
