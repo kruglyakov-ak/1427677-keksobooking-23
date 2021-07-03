@@ -1,5 +1,3 @@
-import { createAds } from './data.js';
-
 import {
   activateMapFilters,
   deactivateMapFilters
@@ -11,10 +9,7 @@ import {
 } from './form.js';
 
 import { addMap } from './map.js';
-
-// Создание данных объявлений
-const adsData = createAds();
-
+import { getData } from './api.js';
 // Функции активации страницы
 const activatePage = () => {
   activateMapFilters();
@@ -27,6 +22,6 @@ const deactivatePage = () => {
 };
 
 deactivatePage();
+getData(addMap, activatePage);
 
-// Управление картой
-addMap(adsData, activatePage);
+

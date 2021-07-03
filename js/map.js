@@ -28,6 +28,29 @@ const mainMarker = L.marker(
     icon: mainPin,
   },
 );
+const ALERT_SHOW_TIME = 5000;
+const ERROR_MASSAGE = 'Не удалось загрузить данные объявлений с сервера';
+
+const showAlert = (message) => {
+  const alertContainer = document.createElement('div');
+  alertContainer.style.zIndex = 1000;
+  alertContainer.style.position = 'absolute';
+  alertContainer.style.left = '150px';
+  alertContainer.style.top = '200px';
+  alertContainer.style.right = '150px';
+  alertContainer.style.padding = '10px 3px';
+  alertContainer.style.fontSize = '30px';
+  alertContainer.style.textAlign = 'center';
+  alertContainer.style.backgroundColor = 'red';
+
+  alertContainer.textContent = message;
+
+  document.body.append(alertContainer);
+
+  setTimeout(() => {
+    alertContainer.remove();
+  }, ALERT_SHOW_TIME);
+};
 
 const addMarkers = (location, card) => {
   const adMarkerGroup = L.layerGroup().addTo(map);
@@ -50,7 +73,7 @@ const addMarkers = (location, card) => {
     );
 };
 
-const addMap = (data, onLoadCallback) => {
+const addMap = (onLoadCallback, data) => {
   map.on('load', () => {
     onLoadCallback();
   })
@@ -72,12 +95,15 @@ const addMap = (data, onLoadCallback) => {
       setAddressValue(address);
     });
   }
-
-  data.forEach((ad) => {
-    const location = ad.location;
-    const card = createCard(ad);
-    addMarkers(location, card);
-  });
+  if (data) {
+    data.forEach((ad) => {
+      const location = ad.location;
+      const card = createCard(ad);
+      addMarkers(location, card);
+    });
+  } else {
+    showAlert(ERROR_MASSAGE);
+  }
 };
 
 const resetMap = () => {
