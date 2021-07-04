@@ -1,7 +1,4 @@
-const cardTemplate = document
-  .querySelector('#card')
-  .content.querySelector('.popup');
-const propertyOffer = {
+const offerData = {
   'palace': {
     label: 'Дворец',
     price: 10000,
@@ -24,14 +21,20 @@ const propertyOffer = {
   },
 };
 
-const generateCard = (data) => {
+const cardTemplate = document
+  .querySelector('#card')
+  .content.querySelector('.popup');
+
+const createCard = (data) => {
   const card = cardTemplate.cloneNode(true);
   // Загаловок
-  card.querySelector('.popup__title').textContent = data.offer.title;
-
+  if (data.offer.title) {
+    card.querySelector('.popup__title').textContent = data.offer.title;
+  }
   // Адрес
-  card.querySelector('.popup__text--address').textContent = data.offer.address;
-
+  if (data.offer.address) {
+    card.querySelector('.popup__text--address').textContent = data.offer.address;
+  }
   // Цена
   const price = card.querySelector('.popup__text--price');
   if (!data.offer.price) {
@@ -41,9 +44,10 @@ const generateCard = (data) => {
   }
 
   // Тип
-  const offerLabel = propertyOffer[data.offer.type].label;
-  card.querySelector('.popup__type').textContent = offerLabel;
-
+  if (data.offer.type) {
+    const offerLabel = offerData[data.offer.type].label;
+    card.querySelector('.popup__type').textContent = offerLabel;
+  }
   // Количество комнат и гостей
   const guestRoom = card.querySelector('.popup__text--capacity');
   if (!data.offer.guests || !data.offer.rooms) {
@@ -61,30 +65,34 @@ const generateCard = (data) => {
   }
 
   // Особенности
-  const featuresList = card.querySelector('.popup__features');
-  const modifiers = data.offer.features.map(
-    (feature) => `popup__feature--${feature}`,
-  );
-  featuresList.querySelectorAll('.popup__feature').forEach((item) => {
-    const modifier = item.classList[1];
-    if (!modifiers.includes(modifier)) {
-      item.remove();
-    }
-  });
-
-  // Описание
-  card.querySelector('.popup__description').textContent = data.offer.description;
-
-  // Фотографии
-  const photos = card.querySelector('.popup__photos');
-  if (!data.offer.photos.length) {
-    photos.remove();
-  } else {
-    photos.innerHTML = '';
-    data.offer.photos.forEach((photoSrc) => {
-      photos.insertAdjacentHTML('afterend',
-        `<img src=${photoSrc} class="popup__photo" alt="Фотография жилья" width="45" height="40"></img>`);
+  if (data.offer.features) {
+    const featuresList = card.querySelector('.popup__features');
+    const modifiers = data.offer.features.map(
+      (feature) => `popup__feature--${feature}`,
+    );
+    featuresList.querySelectorAll('.popup__feature').forEach((item) => {
+      const modifier = item.classList[1];
+      if (!modifiers.includes(modifier)) {
+        item.remove();
+      }
     });
+  }
+  // Описание
+  if (data.offer.description) {
+    card.querySelector('.popup__description').textContent = data.offer.description;
+  }
+  // Фотографии
+  if (data.offer.photos) {
+    const photos = card.querySelector('.popup__photos');
+    if (!data.offer.photos.length) {
+      photos.remove();
+    } else {
+      photos.innerHTML = '';
+      data.offer.photos.forEach((photoSrc) => {
+        photos.insertAdjacentHTML('afterend',
+          `<img src=${photoSrc} class="popup__photo" alt="Фотография жилья" width="45" height="40"></img>`);
+      });
+    }
   }
 
   // Аватарка
@@ -99,6 +107,6 @@ const generateCard = (data) => {
 };
 
 export {
-  generateCard,
-  propertyOffer
+  createCard,
+  offerData
 };

@@ -1,27 +1,24 @@
-const getRandomNumberInRange = (min = 0, max = 1, numberSymbolsAfterComma = 0) => {
-  const lower = Math.min(Math.abs(min), Math.abs(max));
-  const upper = Math.max(Math.abs(min), Math.abs(max));
-  const randomNumber = Math.random() * (upper - lower) + lower;
-  return +randomNumber.toFixed(numberSymbolsAfterComma);
-};
+const ALERT_SHOW_TIME = 5000;
 
-const getArrayRandomElement = (array) => array[getRandomNumberInRange(0, array.length - 1)];
-const getRandomArrayLength = (array) => array.slice(0, getRandomNumberInRange(1, array.length));
+const showAlert = (message) => {
+  const alertContainer = document.createElement('div');
+  alertContainer.style.zIndex = 1000;
+  alertContainer.style.position = 'absolute';
+  alertContainer.style.left = '150px';
+  alertContainer.style.top = '200px';
+  alertContainer.style.right = '150px';
+  alertContainer.style.padding = '10px 3px';
+  alertContainer.style.fontSize = '30px';
+  alertContainer.style.textAlign = 'center';
+  alertContainer.style.backgroundColor = 'red';
 
-const makeUniqueRandomIntegerGenerator = (min, max) => {
-  const previousValues = [];
+  alertContainer.textContent = message;
 
-  return () => {
-    let currentValue = getRandomNumberInRange(min, max);
-    if (previousValues.length >= (max - min + 1)) {
-      throw new Error(`Перебраны все числа из диапазона от ${min} до ${max}`);
-    }
-    while (previousValues.includes(currentValue)) {
-      currentValue = getRandomNumberInRange(min, max);
-    }
-    previousValues.push(currentValue);
-    return currentValue;
-  };
+  document.body.append(alertContainer);
+
+  setTimeout(() => {
+    alertContainer.remove();
+  }, ALERT_SHOW_TIME);
 };
 
 const enableFormElements = (elements) => {
@@ -42,14 +39,23 @@ const addInputValidationIndicator = (input) => {
       input.style.boxShadow = '0 0 2px 2px red';
     } else {
       input.style.boxShadow = '0 0 2px 2px green';
-    }  });
+    }
+  });
+};
+
+const isEscEvent = (evt) => evt.key === 'Escape' || evt.key === 'Esc';
+
+const onPopupEscKeydown = (callback, evt) => {
+  if (isEscEvent(evt)) {
+    evt.preventDefault();
+    callback();
+  }
 };
 
 export {
-  getRandomNumberInRange,
-  getArrayRandomElement,
-  getRandomArrayLength,
-  makeUniqueRandomIntegerGenerator,
+  isEscEvent,
+  onPopupEscKeydown,
+  showAlert,
   enableFormElements,
   disableFormElements,
   addInputValidationIndicator

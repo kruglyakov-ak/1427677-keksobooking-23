@@ -4,9 +4,20 @@ import {
   addInputValidationIndicator
 } from './util.js';
 
+import { offerData } from './card.js';
+
 import {
-  propertyOffer
-} from './card.js';
+  map,
+  resetMap,
+  START_COORDINATES
+} from './map.js';
+
+import { sendData } from './api.js';
+
+const GUESTS_VALUE_MIN = 0;
+const ROOMS_VALUE_MAX = 100;
+const ERROR_TEXT = 'Количество гостей не может превышать количества комнат;\n100 комнат — «не для гостей».';
+const DIGITS_AFTER_POINT = 5;
 
 const form = document.querySelector('.ad-form');
 const formFieldsets = form.querySelectorAll('fieldset');
@@ -20,11 +31,6 @@ const deactivateForm = () => {
   form.classList.add('ad-form--disabled');
   disableFormElements(formFieldsets);
 };
-
-const GUESTS_VALUE_MIN = 0;
-const ROOMS_VALUE_MAX = 100;
-const ERROR_TEXT = 'Количество гостей не может превышать количества комнат;\n100 комнат — «не для гостей».';
-const DIGITS_AFTER_POINT = 5;
 
 const titleInput = document.querySelector('#title');
 const priceInput = document.querySelector('#price');
@@ -60,7 +66,7 @@ capacitySelect.addEventListener('change', (evt) => {
 const typeSelect = document.querySelector('#type');
 
 const setPriceByType = (select) => {
-  const price = propertyOffer[select.value].price;
+  const price = offerData[select.value].price;
   priceInput.setAttribute('min', price);
   priceInput.setAttribute('placeholder', price);
 };
@@ -88,17 +94,39 @@ const setAddressValue = (address) => {
 };
 
 const resetButton = document.querySelector('.ad-form__reset');
-
-resetButton.addEventListener('click', (evt) => {
-  evt.preventDefault();
+const resetForm = () => {
   form.reset();
   setPriceByType(typeSelect);
   validateCapacityAndRooms(roomNumberSelect);
+  if (map) {
+    setAddressValue(START_COORDINATES);
+    resetMap();
+  }
+};
+resetButton.addEventListener('click', (evt) => {
+  evt.preventDefault();
+  resetForm();
 });
+
+const setFormSubmit = (onSuccess, onError) => {
+  form.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+
+    sendData(
+      () => {
+        onSuccess();
+        resetForm();
+      },
+      () => onError(),
+      new FormData(evt.target),
+    );
+  });
+};
 
 export {
   activateForm,
   deactivateForm,
   setAddressValue,
-  resetButton
+  addressInput,
+  setFormSubmit
 };

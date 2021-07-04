@@ -1,22 +1,9 @@
 import {
-  generatedAds
-} from './data.js';
-
-import {
-  generateCard
-} from './card.js';
-
-import {
   setAddressValue,
-  activateForm,
-  deactivateForm,
-  resetButton
+  addressInput
 } from './form.js';
-
-import {
-  activateMapFilters,
-  deactivateMapFilters
-} from './map-filters.js';
+import { createCard } from './card.js';
+import { getData } from './api.js';
 
 const START_COORDINATES = {
   lat: 35.681700,
@@ -33,31 +20,8 @@ const AD_PIN = {
   iconSize: [40, 40],
   iconAnchor: [20, 40],
 };
-
-const activatePage = () => {
-  activateMapFilters();
-  activateForm();
-};
-
-const deactivatePage = () => {
-  deactivateMapFilters();
-  deactivateForm();
-};
-
-deactivatePage();
-const map = L.map('map-canvas')
-  .on('load', activatePage)
-  .setView(START_COORDINATES, START_ZOOM_LEVEL);
-
-L.tileLayer(
-  'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-  {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-  },
-).addTo(map);
-
+const map = L.map('map-canvas');
 const mainPin = L.icon(MAIN_PIN);
-
 const mainMarker = L.marker(
   START_COORDINATES,
   {
@@ -65,29 +29,13 @@ const mainMarker = L.marker(
     icon: mainPin,
   },
 );
-mainMarker.addTo(map);
-setAddressValue(START_COORDINATES);
-mainMarker.on('moveend', (evt) => {
-  const address = evt.target.getLatLng();
-  setAddressValue(address);
-});
 
-resetButton.addEventListener('click', () => {
-  setAddressValue(START_COORDINATES);
-  mainMarker.setLatLng(START_COORDINATES);
-  map.setView(START_COORDINATES, START_ZOOM_LEVEL);
-});
-
-const adMarkerGroup = L.layerGroup().addTo(map);
-
-const createAdMarkers = (ad) => {
+const addMarkers = (location, card) => {
+  const adMarkerGroup = L.layerGroup().addTo(map);
   const adPin = L.icon(AD_PIN);
 
   const adMarker = L.marker(
-    {
-      lat: ad.location.lat,
-      lng: ad.location.lng,
-    },
+    location,
     {
       icon: adPin,
     },
@@ -96,13 +44,56 @@ const createAdMarkers = (ad) => {
   adMarker
     .addTo(adMarkerGroup)
     .bindPopup(
-      generateCard(ad),
+      card,
       {
         keepInView: true,
       },
     );
 };
 
-generatedAds.forEach((generatedAd) => {
-  createAdMarkers(generatedAd);
-});
+const renderAdsOnMap = (data) => {
+  if (data) {
+    data.forEach((ad) => {
+      const location = ad.location;
+      const card = createCard(ad);
+      addMarkers(location, card);
+    });
+  }
+};
+
+const addMap = (onLoadCallback) => {
+  map.on('load', () => {
+    onLoadCallback();
+  })
+    .setView(START_COORDINATES, START_ZOOM_LEVEL);
+
+  L.tileLayer(
+    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    },
+  ).addTo(map);
+
+  mainMarker.addTo(map);
+
+  if (addressInput) {
+    setAddressValue(START_COORDINATES);
+    mainMarker.on('moveend', (evt) => {
+      const address = evt.target.getLatLng();
+      setAddressValue(address);
+    });
+  }
+  getData(renderAdsOnMap);
+};
+
+const resetMap = () => {
+  mainMarker.setLatLng(START_COORDINATES);
+  map.setView(START_COORDINATES, START_ZOOM_LEVEL);
+};
+
+export {
+  START_COORDINATES,
+  resetMap,
+  addMap,
+  map
+};
