@@ -3,6 +3,7 @@ import {
 } from './util.js';
 
 const DATA_REQUEST_URL = 'https://23.javascript.pages.academy/keksobooking/data';
+const SEND_DATA_URL = 'https://23.javascript.pages.academy/keksobooking';
 const ERROR_MASSAGE = 'Не удалось загрузить данные объявлений с сервера ошибка: ';
 
 const getData = (onSuccess) => {
@@ -22,7 +23,7 @@ const getData = (onSuccess) => {
 
 const sendData = (onSuccess, onFail, body) => {
   fetch(
-    'https://23.javascript.pages.academy/keksobooking',
+    SEND_DATA_URL,
     {
       method: 'POST',
       body,

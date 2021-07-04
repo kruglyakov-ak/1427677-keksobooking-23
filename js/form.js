@@ -4,7 +4,7 @@ import {
   addInputValidationIndicator
 } from './util.js';
 
-import { offerData } from './data.js';
+import { offerData } from './card.js';
 
 import {
   map,

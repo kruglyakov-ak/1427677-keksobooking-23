@@ -27,6 +27,9 @@ const deactivatePage = () => {
 };
 
 deactivatePage();
+
+// Добавление карты на страницу и активация формы объявления
 addMap(activatePage);
 
+// Отправка данных формы объявления на сервер
 setFormSubmit(openSuccessMessage, openErrorMessage);
