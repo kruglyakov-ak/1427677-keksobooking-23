@@ -12,6 +12,8 @@ import {
   START_COORDINATES
 } from './map.js';
 
+import { sendData } from './api.js';
+
 const GUESTS_VALUE_MIN = 0;
 const ROOMS_VALUE_MAX = 100;
 const ERROR_TEXT = 'Количество гостей не может превышать количества комнат;\n100 комнат — «не для гостей».';
@@ -92,9 +94,7 @@ const setAddressValue = (address) => {
 };
 
 const resetButton = document.querySelector('.ad-form__reset');
-
-resetButton.addEventListener('click', (evt) => {
-  evt.preventDefault();
+const resetForm = () => {
   form.reset();
   setPriceByType(typeSelect);
   validateCapacityAndRooms(roomNumberSelect);
@@ -102,11 +102,31 @@ resetButton.addEventListener('click', (evt) => {
     setAddressValue(START_COORDINATES);
     resetMap();
   }
+};
+resetButton.addEventListener('click', (evt) => {
+  evt.preventDefault();
+  resetForm();
 });
+
+const setFormSubmit = (onSuccess, onError) => {
+  form.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+
+    sendData(
+      () => {
+        onSuccess();
+        resetForm();
+      },
+      () => onError(),
+      new FormData(evt.target),
+    );
+  });
+};
 
 export {
   activateForm,
   deactivateForm,
   setAddressValue,
-  addressInput
+  addressInput,
+  setFormSubmit
 };

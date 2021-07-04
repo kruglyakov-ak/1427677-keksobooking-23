@@ -5,10 +5,16 @@ import {
 
 import {
   activateForm,
-  deactivateForm
+  deactivateForm,
+  setFormSubmit
 } from './form.js';
 
 import { addMap } from './map.js';
+
+import {
+  openSuccessMessage,
+  openErrorMessage
+} from './popup-messages.js';
 // Функции активации страницы
 const activatePage = () => {
   activateMapFilters();
@@ -22,3 +28,5 @@ const deactivatePage = () => {
 
 deactivatePage();
 addMap(activatePage);
+
+setFormSubmit(openSuccessMessage, openErrorMessage);
