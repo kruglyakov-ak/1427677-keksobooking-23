@@ -1,6 +1,7 @@
 const ALERT_SHOW_TIME = 5000;
+const ERROR_MASSAGE = 'Не удалось загрузить данные объявлений с сервера ошибка: ';
 
-const showAlert = (message) => {
+const showAlert = () => {
   const alertContainer = document.createElement('div');
   alertContainer.style.zIndex = 1000;
   alertContainer.style.position = 'absolute';
@@ -12,7 +13,7 @@ const showAlert = (message) => {
   alertContainer.style.textAlign = 'center';
   alertContainer.style.backgroundColor = 'red';
 
-  alertContainer.textContent = message;
+  alertContainer.textContent = ERROR_MASSAGE;
 
   document.body.append(alertContainer);
 

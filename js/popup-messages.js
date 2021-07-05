@@ -8,11 +8,6 @@ const successMessage = successMessageTemplate.querySelector('.success');
 const errorMessage = errorMessageTemplate.querySelector('.error');
 const errorCloseButton = errorMessageTemplate.querySelector('.error__button');
 
-body.appendChild(successMessage);
-body.appendChild(errorMessage);
-successMessage.classList.add('visually-hidden');
-errorMessage.classList.add('visually-hidden');
-
 const closePopup = (closeCallback, button) => {
   document.addEventListener('keydown', (evt) => {
     onPopupEscKeydown(closeCallback, evt);
@@ -24,21 +19,21 @@ const closePopup = (closeCallback, button) => {
 };
 
 const closeSuccessMessage = () => {
-  successMessage.classList.add('visually-hidden');
+  successMessage.remove();
 };
 
 const closeErrorMessage = () => {
-  errorMessage.classList.add('visually-hidden');
+  errorMessage.remove();
 };
 
 
 const openSuccessMessage = () => {
-  successMessage.classList.remove('visually-hidden');
+  body.appendChild(successMessage);
   closePopup(closeSuccessMessage);
 };
 
 const openErrorMessage = () => {
-  errorMessage.classList.remove('visually-hidden');
+  body.appendChild(errorMessage);
   closePopup(closeErrorMessage, errorCloseButton);
 };
 

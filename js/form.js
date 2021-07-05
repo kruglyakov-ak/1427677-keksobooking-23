@@ -12,7 +12,12 @@ import {
   START_COORDINATES
 } from './map.js';
 
-import { sendData } from './api.js';
+import { fetchData } from './api.js';
+
+import {
+  openSuccessMessage,
+  openErrorMessage
+} from './popup-messages.js';
 
 const GUESTS_VALUE_MIN = 0;
 const ROOMS_VALUE_MAX = 100;
@@ -108,25 +113,23 @@ resetButton.addEventListener('click', (evt) => {
   resetForm();
 });
 
-const setFormSubmit = (onSuccess, onError) => {
-  form.addEventListener('submit', (evt) => {
-    evt.preventDefault();
-
-    sendData(
-      () => {
-        onSuccess();
-        resetForm();
-      },
-      () => onError(),
-      new FormData(evt.target),
-    );
+form.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+  fetchData({
+    url: 'https://23.javascript.pages.academy/keksobooking',
+    method: 'POST',
+    body: new FormData(evt.target),
+    onSuccessCb: () => {
+      openSuccessMessage();
+      resetForm();
+    },
+    onErrorCb: openErrorMessage,
   });
-};
+});
 
 export {
   activateForm,
   deactivateForm,
   setAddressValue,
-  addressInput,
-  setFormSubmit
+  addressInput
 };

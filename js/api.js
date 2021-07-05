@@ -1,47 +1,27 @@
-import {
-  showAlert
-} from './util.js';
-
-const DATA_REQUEST_URL = 'https://23.javascript.pages.academy/keksobooking/data';
-const SEND_DATA_URL = 'https://23.javascript.pages.academy/keksobooking';
-const ERROR_MASSAGE = 'Не удалось загрузить данные объявлений с сервера ошибка: ';
-
-const getData = (onSuccess) => {
-  fetch(DATA_REQUEST_URL)
-    .then((response) => {
-      if (response.ok) {
-        return response;
-      }
-      throw new Error(showAlert(`${ERROR_MASSAGE} ${response.status} — ${response.statusText}`));
-    })
-    .then((response) => response.json())
-    .then((data) => {
-      onSuccess(data);
-    })
-    .catch((error) => error);
-};
-
-const sendData = (onSuccess, onFail, body) => {
+const fetchData = ({ url, method, body, onSuccessCb, onErrorCb }) => {
   fetch(
-    SEND_DATA_URL,
+    url,
     {
-      method: 'POST',
+      method,
       body,
     },
   )
     .then((response) => {
       if (response.ok) {
-        onSuccess();
+        return response;
       } else {
-        onFail();
+        onErrorCb();
       }
     })
+    .then((response) => response.json())
+    .then((data) => {
+      onSuccessCb(data);
+    })
     .catch(() => {
-      onFail();
+      onErrorCb();
     });
 };
 
 export {
-  getData,
-  sendData
+  fetchData
 };

@@ -5,16 +5,17 @@ import {
 
 import {
   activateForm,
-  deactivateForm,
-  setFormSubmit
+  deactivateForm
 } from './form.js';
 
-import { addMap } from './map.js';
+import { fetchData } from './api.js';
+import { showAlert } from './util.js';
 
 import {
-  openSuccessMessage,
-  openErrorMessage
-} from './popup-messages.js';
+  addMap,
+  renderAdsOnMap
+} from './map.js';
+
 // Функции активации страницы
 const activatePage = () => {
   activateMapFilters();
@@ -31,5 +32,9 @@ deactivatePage();
 // Добавление карты на страницу и активация формы объявления
 addMap(activatePage);
 
-// Отправка данных формы объявления на сервер
-setFormSubmit(openSuccessMessage, openErrorMessage);
+//Получение данных с сервера
+fetchData({
+  url: 'https://23.javascript.pages.academy/keksobooking/data',
+  onSuccessCb: renderAdsOnMap,
+  onErrorCb: showAlert,
+});
