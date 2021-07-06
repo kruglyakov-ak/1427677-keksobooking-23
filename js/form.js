@@ -12,7 +12,7 @@ import {
   START_COORDINATES
 } from './map.js';
 
-import { fetchData } from './api.js';
+import { getOrPostData } from './api.js';
 
 import {
   openSuccessMessage,
@@ -23,6 +23,7 @@ const GUESTS_VALUE_MIN = 0;
 const ROOMS_VALUE_MAX = 100;
 const ERROR_TEXT = 'Количество гостей не может превышать количества комнат;\n100 комнат — «не для гостей».';
 const DIGITS_AFTER_POINT = 5;
+const POST_DATA_URL = 'https://23.javascript.pages.academy/keksobooking';
 
 const form = document.querySelector('.ad-form');
 const formFieldsets = form.querySelectorAll('fieldset');
@@ -115,8 +116,8 @@ resetButton.addEventListener('click', (evt) => {
 
 form.addEventListener('submit', (evt) => {
   evt.preventDefault();
-  fetchData({
-    url: 'https://23.javascript.pages.academy/keksobooking',
+  getOrPostData({
+    url: POST_DATA_URL,
     method: 'POST',
     body: new FormData(evt.target),
     onSuccessCb: () => {

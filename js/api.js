@@ -1,4 +1,4 @@
-const fetchData = ({ url, method, body, onSuccessCb, onErrorCb }) => {
+const getOrPostData = ({ url, method, body, onSuccessCb, onErrorCb }) => {
   fetch(
     url,
     {
@@ -23,5 +23,5 @@ const fetchData = ({ url, method, body, onSuccessCb, onErrorCb }) => {
 };
 
 export {
-  fetchData
+  getOrPostData
 };

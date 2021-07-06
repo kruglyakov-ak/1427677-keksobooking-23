@@ -8,13 +8,15 @@ import {
   deactivateForm
 } from './form.js';
 
-import { fetchData } from './api.js';
+import { getOrPostData } from './api.js';
 import { showAlert } from './util.js';
 
 import {
   addMap,
   renderAdsOnMap
 } from './map.js';
+
+const GET_DATA_URL = 'https://23.javascript.pages.academy/keksobooking/data';
 
 // Функции активации страницы
 const activatePage = () => {
@@ -33,8 +35,8 @@ deactivatePage();
 addMap(activatePage);
 
 //Получение данных с сервера
-fetchData({
-  url: 'https://23.javascript.pages.academy/keksobooking/data',
+getOrPostData({
+  url: GET_DATA_URL,
   onSuccessCb: renderAdsOnMap,
   onErrorCb: showAlert,
 });
