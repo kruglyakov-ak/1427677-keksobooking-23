@@ -3,6 +3,7 @@ import {
   addressInput
 } from './form.js';
 import { createCard } from './card.js';
+// import { activateMapFilters, filterHousingType } from './map-filters.js';
 
 const START_COORDINATES = {
   lat: 35.681700,

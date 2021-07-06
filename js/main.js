@@ -19,11 +19,6 @@ import {
 const GET_DATA_URL = 'https://23.javascript.pages.academy/keksobooking/data';
 
 // Функции активации страницы
-const activatePage = () => {
-  activateMapFilters();
-  activateForm();
-};
-
 const deactivatePage = () => {
   deactivateMapFilters();
   deactivateForm();
@@ -32,11 +27,14 @@ const deactivatePage = () => {
 deactivatePage();
 
 // Добавление карты на страницу и активация формы объявления
-addMap(activatePage);
+addMap(activateForm);
 
 //Получение данных с сервера
 getOrPostData({
   url: GET_DATA_URL,
-  onSuccessCb: renderAdsOnMap,
+  onSuccessCb: (data) => {
+    renderAdsOnMap(data);
+    activateMapFilters();
+  },
   onErrorCb: showAlert,
 });
