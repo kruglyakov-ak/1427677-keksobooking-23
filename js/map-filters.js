@@ -6,7 +6,8 @@ import {
 const mapFilters = document.querySelector('.map__filters');
 const filtersFieldsets = mapFilters.querySelectorAll('fieldset');
 const filtersSelects = mapFilters.querySelectorAll('select');
-const housingFeatures = mapFilters.querySelector('#housing-features');
+// const typeSelect = mapFilters.querySelector('#housing-type');
+// const roomsSelect = mapFilters.querySelector('#housing-rooms');
 
 const activateMapFilters = () => {
   mapFilters.classList.remove('map__filters--disabled');
@@ -18,14 +19,18 @@ const deactivateMapFilters = () => {
   disableFormElements([...filtersFieldsets, ...filtersSelects]);
 };
 
-
 const getFeaturesRank = (ad) => {
+  const housingFeatures = mapFilters.querySelectorAll('.map__checkbox:checked');
   let rank = 0;
-
-  if (ad.offer.features === housingFeatures.value) {
-    rank += 1;
+  if (ad.offer.features) {
+    housingFeatures.forEach((feature) => {
+      if (ad.offer.features.includes(feature.value)) {
+        rank += 1;
+      } else {
+        rank = 0;
+      }
+    });
   }
-
   return rank;
 };
 
@@ -37,7 +42,7 @@ const compareAds = (ad1, ad2) => {
 };
 
 const setFiltersChange = (cb) => {
-  housingFeatures.addEventListener('change', () => {
+  mapFilters.addEventListener('change', () => {
     cb();
   });
 };

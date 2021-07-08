@@ -30,10 +30,10 @@ const mainMarker = L.marker(
     icon: mainPin,
   },
 );
+const adMarkerGroup = L.layerGroup().addTo(map);
 
-const addMarkers = (location, card, markerGroup) => {
+const createMarkers = (location, card) => {
   const adPin = L.icon(AD_PIN);
-
   const adMarker = L.marker(
     location,
     {
@@ -42,7 +42,7 @@ const addMarkers = (location, card, markerGroup) => {
   );
 
   adMarker
-    .addTo(markerGroup)
+    .addTo(adMarkerGroup)
     .bindPopup(
       card,
       {
@@ -52,9 +52,9 @@ const addMarkers = (location, card, markerGroup) => {
 };
 
 const renderAdsOnMap = (data) => {
-  const adMarkerGroup = L.layerGroup();
-
+  adMarkerGroup.clearLayers();
   if (data) {
+    // console.log(data);
     data
       .slice()
       .sort(compareAds)
@@ -62,11 +62,8 @@ const renderAdsOnMap = (data) => {
       .forEach((ad) => {
         const location = ad.location;
         const card = createCard(ad);
-        addMarkers(location, card, adMarkerGroup);
+        createMarkers(location, card);
       });
-
-    adMarkerGroup.remove();
-    adMarkerGroup.addTo(map);
   }
 };
 

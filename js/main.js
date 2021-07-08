@@ -36,7 +36,9 @@ getOrPostData({
   onSuccessCb: (data) => {
     activateMapFilters();
     renderAdsOnMap(data);
-    setFiltersChange(() => renderAdsOnMap(data));
+    setFiltersChange(() => {
+      renderAdsOnMap(data);
+    });
   },
   onErrorCb: showAlert,
 });
