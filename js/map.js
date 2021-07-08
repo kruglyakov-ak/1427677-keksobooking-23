@@ -3,7 +3,7 @@ import {
   addressInput
 } from './form.js';
 import { createCard } from './card.js';
-// import { activateMapFilters, filterHousingType } from './map-filters.js';
+import { compareAds } from './map-filters.js';
 
 const START_COORDINATES = {
   lat: 35.681700,
@@ -31,8 +31,7 @@ const mainMarker = L.marker(
   },
 );
 
-const addMarkers = (location, card) => {
-  const adMarkerGroup = L.layerGroup().addTo(map);
+const addMarkers = (location, card, markerGroup) => {
   const adPin = L.icon(AD_PIN);
 
   const adMarker = L.marker(
@@ -43,7 +42,7 @@ const addMarkers = (location, card) => {
   );
 
   adMarker
-    .addTo(adMarkerGroup)
+    .addTo(markerGroup)
     .bindPopup(
       card,
       {
@@ -53,13 +52,21 @@ const addMarkers = (location, card) => {
 };
 
 const renderAdsOnMap = (data) => {
+  const adMarkerGroup = L.layerGroup();
+
   if (data) {
-    data.slice(0, ADS_ON_MAP_COUNT)
+    data
+      .slice()
+      .sort(compareAds)
+      .slice(0, ADS_ON_MAP_COUNT)
       .forEach((ad) => {
         const location = ad.location;
         const card = createCard(ad);
-        addMarkers(location, card);
+        addMarkers(location, card, adMarkerGroup);
       });
+
+    adMarkerGroup.remove();
+    adMarkerGroup.addTo(map);
   }
 };
 

@@ -1,6 +1,7 @@
 import {
   activateMapFilters,
-  deactivateMapFilters
+  deactivateMapFilters,
+  setFiltersChange
 } from './map-filters.js';
 
 import {
@@ -33,8 +34,9 @@ addMap(activateForm);
 getOrPostData({
   url: GET_DATA_URL,
   onSuccessCb: (data) => {
-    renderAdsOnMap(data);
     activateMapFilters();
+    renderAdsOnMap(data);
+    setFiltersChange(() => renderAdsOnMap(data));
   },
   onErrorCb: showAlert,
 });
