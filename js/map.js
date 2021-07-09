@@ -3,7 +3,9 @@ import {
   addressInput
 } from './form.js';
 import { createCard } from './card.js';
-import { compareAds } from './map-filters.js';
+import {
+  compareAds
+} from './map-filters.js';
 
 const START_COORDINATES = {
   lat: 35.681700,
@@ -54,7 +56,6 @@ const createMarkers = (location, card) => {
 const renderAdsOnMap = (data) => {
   adMarkerGroup.clearLayers();
   if (data) {
-    // console.log(data);
     data
       .slice()
       .sort(compareAds)
@@ -64,6 +65,7 @@ const renderAdsOnMap = (data) => {
         const card = createCard(ad);
         createMarkers(location, card);
       });
+    console.log(data);
   }
 };
 

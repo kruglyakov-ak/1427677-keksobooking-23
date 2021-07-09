@@ -1,7 +1,8 @@
 import {
   activateMapFilters,
   deactivateMapFilters,
-  setFiltersChange
+  setFiltersChange,
+  filterByType
 } from './map-filters.js';
 
 import {
@@ -37,7 +38,7 @@ getOrPostData({
     activateMapFilters();
     renderAdsOnMap(data);
     setFiltersChange(() => {
-      renderAdsOnMap(data);
+      renderAdsOnMap(filterByType(data));
     });
   },
   onErrorCb: showAlert,
