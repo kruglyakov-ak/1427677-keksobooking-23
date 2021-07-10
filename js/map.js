@@ -65,7 +65,7 @@ const renderAdsOnMap = (data) => {
         const card = createCard(ad);
         createMarkers(location, card);
       });
-    console.log(data);
+    // console.log(data);
   }
 };
 

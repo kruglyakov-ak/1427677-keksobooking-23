@@ -2,7 +2,10 @@ import {
   activateMapFilters,
   deactivateMapFilters,
   setFiltersChange,
-  filterByType
+  filterByType,
+  filterByPrice,
+  filterByRooms,
+  filterByGuests
 } from './map-filters.js';
 
 import {
@@ -38,7 +41,7 @@ getOrPostData({
     activateMapFilters();
     renderAdsOnMap(data);
     setFiltersChange(() => {
-      renderAdsOnMap(filterByType(data));
+      renderAdsOnMap(filterByType(filterByPrice(filterByRooms(filterByGuests(data)))));
     });
   },
   onErrorCb: showAlert,

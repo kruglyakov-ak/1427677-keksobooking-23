@@ -102,5 +102,8 @@ export {
   compareAds,
   getFeaturesRank,
   setFiltersChange,
-  filterByType
+  filterByType,
+  filterByPrice,
+  filterByRooms,
+  filterByGuests
 };
