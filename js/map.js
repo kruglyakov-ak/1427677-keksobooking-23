@@ -4,7 +4,8 @@ import {
 } from './form.js';
 import { createCard } from './card.js';
 import {
-  compareAds
+  compareAds,
+  getFeaturesRank
 } from './map-filters.js';
 
 const START_COORDINATES = {
@@ -61,9 +62,12 @@ const renderAdsOnMap = (data) => {
       .sort(compareAds)
       .slice(0, ADS_ON_MAP_COUNT)
       .forEach((ad) => {
+        const rank = getFeaturesRank(ad);
         const location = ad.location;
         const card = createCard(ad);
-        createMarkers(location, card);
+        if (rank >= 0) {
+          createMarkers(location, card);
+        }
       });
     // console.log(data);
   }

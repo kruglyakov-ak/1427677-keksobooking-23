@@ -12,7 +12,7 @@ const typeSelect = mapFilters.querySelector('#housing-type');
 const priceSelect = mapFilters.querySelector('#housing-price');
 const roomsSelect = mapFilters.querySelector('#housing-rooms');
 const guestSelect = mapFilters.querySelector('#housing-guests');
-
+const housingFeatures = mapFilters.querySelectorAll('.map__checkbox');
 
 const activateMapFilters = () => {
   mapFilters.classList.remove('map__filters--disabled');
@@ -68,16 +68,18 @@ const filterByGuests = (data) => {
 
 
 const getFeaturesRank = (ad) => {
-  const housingFeatures = mapFilters.querySelectorAll('.map__checkbox:checked');
+  const checkedHousingFeatures = mapFilters.querySelectorAll('.map__checkbox:checked');
   let rank = 0;
   if (ad.offer.features) {
-    housingFeatures.forEach((feature) => {
+    checkedHousingFeatures.forEach((feature) => {
       if (ad.offer.features.includes(feature.value)) {
         rank += 1;
       } else {
-        rank = 0;
+        rank = -(housingFeatures.length);
       }
     });
+  } else if (!checkedHousingFeatures.length) {
+    rank = 0;
   }
   return rank;
 };
@@ -96,14 +98,21 @@ const setFiltersChange = (cb) => {
   });
 };
 
+const resetMapFilters = () => {
+  if (mapFilters) {
+    mapFilters.reset();
+  }
+};
+
 export {
   activateMapFilters,
   deactivateMapFilters,
   compareAds,
-  getFeaturesRank,
   setFiltersChange,
   filterByType,
   filterByPrice,
   filterByRooms,
-  filterByGuests
+  filterByGuests,
+  getFeaturesRank,
+  resetMapFilters
 };
