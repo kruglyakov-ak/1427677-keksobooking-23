@@ -2,8 +2,17 @@ import {
   enableFormElements,
   disableFormElements
 } from './util.js';
+
+import {
+  renderAdsOnMap
+} from './map.js';
+
 const LOW_PRICE = 10000;
 const HIGH_PRICE = 50000;
+const NO_FILTER_VALUE = 'any';
+const PRICE_SELECT_MIDDLE_VALUE = 'middle';
+const PRICE_SELECT_LOW_VALUE = 'middle';
+const PRICE_SELECT_HIGHT_VALUE = 'middle';
 
 const mapFilters = document.querySelector('.map__filters');
 const filtersFieldsets = mapFilters.querySelectorAll('fieldset');
@@ -11,7 +20,7 @@ const filtersSelects = mapFilters.querySelectorAll('select');
 const typeSelect = mapFilters.querySelector('#housing-type');
 const priceSelect = mapFilters.querySelector('#housing-price');
 const roomsSelect = mapFilters.querySelector('#housing-rooms');
-const guestSelect = mapFilters.querySelector('#housing-guests');
+const guestsSelect = mapFilters.querySelector('#housing-guests');
 const housingFeatures = mapFilters.querySelectorAll('.map__checkbox');
 
 const activateMapFilters = () => {
@@ -24,48 +33,38 @@ const deactivateMapFilters = () => {
   disableFormElements([...filtersFieldsets, ...filtersSelects]);
 };
 
-const filterByType = (data) => {
-  if (typeSelect.value === 'any') {
-    return data;
+const filterByType = (ad) => {
+  if (typeSelect.value === NO_FILTER_VALUE) {
+    return false;
   } else {
-    const filteredData = data.filter((ad) => ad.offer.type === typeSelect.value);
-    return filteredData;
+    return ad.offer.type === typeSelect.value;
   }
 };
-
-const filterByPrice = (data) => {
-  if (priceSelect.value === 'any') {
-    return data;
-  } else if (priceSelect.value === 'middle') {
-    const filteredData = data.filter((ad) => ad.offer.price >= LOW_PRICE && ad.offer.price <= HIGH_PRICE);
-    return filteredData;
-  } else if (priceSelect.value === 'low') {
-    const filteredData = data.filter((ad) => ad.offer.price <= LOW_PRICE);
-    return filteredData;
-  } else if (priceSelect.value === 'high') {
-    const filteredData = data.filter((ad) => ad.offer.price >= HIGH_PRICE);
-    return filteredData;
-  }
-};
-
-const filterByRooms = (data) => {
-  if (roomsSelect.value === 'any') {
-    return data;
+const filterByRooms = (ad) => {
+  if (typeSelect.value === NO_FILTER_VALUE) {
+    return false;
   } else {
-    const filteredData = data.filter((ad) => ad.offer.rooms === +roomsSelect.value);
-    return filteredData;
+    return ad.offer.rooms === +roomsSelect.value;
   }
 };
-
-const filterByGuests = (data) => {
-  if (guestSelect.value === 'any') {
-    return data;
+const filterByGuests = (ad) => {
+  if (typeSelect.value === NO_FILTER_VALUE) {
+    return false;
   } else {
-    const filteredData = data.filter((ad) => ad.offer.guests === +guestSelect.value);
-    return filteredData;
+    return ad.offer.guests === +guestsSelect.value;
   }
 };
-
+const filterByPrice = (ad) => {
+  if (priceSelect.value === PRICE_SELECT_MIDDLE_VALUE) {
+    return ad.offer.price >= LOW_PRICE && ad.offer.price <= HIGH_PRICE;
+  } else if (priceSelect.value === PRICE_SELECT_LOW_VALUE) {
+    return ad.offer.price <= LOW_PRICE;
+  } else if (priceSelect.value === PRICE_SELECT_HIGHT_VALUE) {
+    return ad.offer.price >= HIGH_PRICE;
+  } else if (priceSelect.value === NO_FILTER_VALUE) {
+    return false;
+  }
+};
 
 const getFeaturesRank = (ad) => {
   const checkedHousingFeatures = mapFilters.querySelectorAll('.map__checkbox:checked');
@@ -92,9 +91,24 @@ const compareAds = (ad1, ad2) => {
   return rankB - rankA;
 };
 
-const setFiltersChange = (cb) => {
-  mapFilters.addEventListener('change', () => {
-    cb();
+const filterMapMarkers = (data) => {
+  mapFilters.addEventListener('change', (evt) => {
+    const setFiltersChange = () => {
+      const setFilter = (ad) => {
+        if (evt.target.name === typeSelect.name) {
+          return filterByType(ad);
+        } else if (evt.target.name === roomsSelect.name) {
+          return filterByRooms(ad);
+        } else if (evt.target.name === guestsSelect.name) {
+          return filterByGuests(ad);
+        } else if (evt.target.name === priceSelect.name) {
+          return filterByPrice(ad);
+        }
+      };
+      const filteredData = data.filter((ad) => setFilter(ad));
+      return filteredData;
+    };
+    renderAdsOnMap(setFiltersChange());
   });
 };
 
@@ -108,11 +122,7 @@ export {
   activateMapFilters,
   deactivateMapFilters,
   compareAds,
-  setFiltersChange,
-  filterByType,
-  filterByPrice,
-  filterByRooms,
-  filterByGuests,
+  filterMapMarkers,
   getFeaturesRank,
   resetMapFilters
 };
