@@ -53,11 +53,20 @@ const onPopupEscKeydown = (callback, evt) => {
   }
 };
 
+const getValues = (elements) => {
+  const values = [];
+  elements.forEach((element) => {
+    values.push(element.value);
+  });
+  return values;
+};
+
 export {
   isEscEvent,
   onPopupEscKeydown,
   showAlert,
   enableFormElements,
   disableFormElements,
-  addInputValidationIndicator
+  addInputValidationIndicator,
+  getValues
 };

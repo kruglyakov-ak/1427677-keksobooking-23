@@ -1,12 +1,15 @@
 import {
   activateMapFilters,
   deactivateMapFilters,
-  filterMapMarkers
+  filterMapMarkers,
+  resetMapFilter
 } from './map-filters.js';
 
 import {
   activateForm,
-  deactivateForm
+  deactivateForm,
+  resetButton,
+  form
 } from './form.js';
 
 import { getOrPostData } from './api.js';
@@ -36,7 +39,9 @@ getOrPostData({
   onSuccessCb: (data) => {
     activateMapFilters();
     renderAdsOnMap(data);
-    filterMapMarkers(data);
+    filterMapMarkers(data, renderAdsOnMap);
+    resetButton.addEventListener('click', () => resetMapFilter(data, renderAdsOnMap));
+    form.addEventListener('submit', () => resetMapFilter(data, renderAdsOnMap));
   },
   onErrorCb: showAlert,
 });

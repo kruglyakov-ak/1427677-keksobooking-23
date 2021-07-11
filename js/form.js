@@ -19,10 +19,6 @@ import {
   openErrorMessage
 } from './popup-messages.js';
 
-import {
-  resetMapFilters
-} from './map-filters.js';
-
 const GUESTS_VALUE_MIN = 0;
 const ROOMS_VALUE_MAX = 100;
 const ERROR_TEXT = 'Количество гостей не может превышать количества комнат;\n100 комнат — «не для гостей».';
@@ -116,7 +112,6 @@ const resetForm = () => {
 resetButton.addEventListener('click', (evt) => {
   evt.preventDefault();
   resetForm();
-  resetMapFilters();
 });
 
 form.addEventListener('submit', (evt) => {
@@ -128,7 +123,6 @@ form.addEventListener('submit', (evt) => {
     onSuccessCb: () => {
       openSuccessMessage();
       resetForm();
-      resetMapFilters();
     },
     onErrorCb: openErrorMessage,
   });
@@ -138,5 +132,7 @@ export {
   activateForm,
   deactivateForm,
   setAddressValue,
-  addressInput
+  addressInput,
+  resetButton,
+  form
 };
