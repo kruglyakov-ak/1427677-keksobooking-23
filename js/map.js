@@ -3,7 +3,6 @@ import {
   addressInput
 } from './form.js';
 import { createCard } from './card.js';
-import { getData } from './api.js';
 
 const START_COORDINATES = {
   lat: 35.681700,
@@ -20,6 +19,7 @@ const AD_PIN = {
   iconSize: [40, 40],
   iconAnchor: [20, 40],
 };
+const ADS_ON_MAP_COUNT = 10;
 const map = L.map('map-canvas');
 const mainPin = L.icon(MAIN_PIN);
 const mainMarker = L.marker(
@@ -29,11 +29,10 @@ const mainMarker = L.marker(
     icon: mainPin,
   },
 );
+const adMarkerGroup = L.layerGroup().addTo(map);
 
-const addMarkers = (location, card) => {
-  const adMarkerGroup = L.layerGroup().addTo(map);
+const createMarkers = (location, card) => {
   const adPin = L.icon(AD_PIN);
-
   const adMarker = L.marker(
     location,
     {
@@ -52,12 +51,15 @@ const addMarkers = (location, card) => {
 };
 
 const renderAdsOnMap = (data) => {
+  adMarkerGroup.clearLayers();
   if (data) {
-    data.forEach((ad) => {
-      const location = ad.location;
-      const card = createCard(ad);
-      addMarkers(location, card);
-    });
+    data
+      .slice(0, ADS_ON_MAP_COUNT)
+      .forEach((ad) => {
+        const location = ad.location;
+        const card = createCard(ad);
+        createMarkers(location, card);
+      });
   }
 };
 
@@ -83,17 +85,18 @@ const addMap = (onLoadCallback) => {
       setAddressValue(address);
     });
   }
-  getData(renderAdsOnMap);
 };
 
 const resetMap = () => {
   mainMarker.setLatLng(START_COORDINATES);
   map.setView(START_COORDINATES, START_ZOOM_LEVEL);
+  map.closePopup();
 };
 
 export {
   START_COORDINATES,
   resetMap,
   addMap,
-  map
+  map,
+  renderAdsOnMap
 };

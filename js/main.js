@@ -1,26 +1,32 @@
 import {
   activateMapFilters,
-  deactivateMapFilters
+  deactivateMapFilters,
+  filterMapMarkers,
+  resetMapFilter,
+  setChangeFilter
 } from './map-filters.js';
 
 import {
   activateForm,
   deactivateForm,
-  setFormSubmit
+  resetButton,
+  form
 } from './form.js';
 
-import { addMap } from './map.js';
+import { getOrPostData } from './api.js';
+import {
+  showAlert,
+  debounce
+} from './util.js';
 
 import {
-  openSuccessMessage,
-  openErrorMessage
-} from './popup-messages.js';
-// Функции активации страницы
-const activatePage = () => {
-  activateMapFilters();
-  activateForm();
-};
+  addMap,
+  renderAdsOnMap
+} from './map.js';
 
+const GET_DATA_URL = 'https://23.javascript.pages.academy/keksobooking/data';
+const RERENDER_DELAY = 500;
+// Функции активации страницы
 const deactivatePage = () => {
   deactivateMapFilters();
   deactivateForm();
@@ -29,7 +35,20 @@ const deactivatePage = () => {
 deactivatePage();
 
 // Добавление карты на страницу и активация формы объявления
-addMap(activatePage);
+addMap(activateForm);
 
-// Отправка данных формы объявления на сервер
-setFormSubmit(openSuccessMessage, openErrorMessage);
+//Получение данных с сервера
+getOrPostData({
+  url: GET_DATA_URL,
+  onSuccessCb: (data) => {
+    activateMapFilters();
+    renderAdsOnMap(data);
+    setChangeFilter(debounce(
+      () => renderAdsOnMap(filterMapMarkers(data)),
+      RERENDER_DELAY,
+    ));
+    resetButton.addEventListener('click', () => resetMapFilter(data, renderAdsOnMap));
+    form.addEventListener('submit', () => resetMapFilter(data, renderAdsOnMap));
+  },
+  onErrorCb: showAlert,
+});

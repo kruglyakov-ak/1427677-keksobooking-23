@@ -12,12 +12,18 @@ import {
   START_COORDINATES
 } from './map.js';
 
-import { sendData } from './api.js';
+import { getOrPostData } from './api.js';
+
+import {
+  openSuccessMessage,
+  openErrorMessage
+} from './popup-messages.js';
 
 const GUESTS_VALUE_MIN = 0;
 const ROOMS_VALUE_MAX = 100;
 const ERROR_TEXT = 'Количество гостей не может превышать количества комнат;\n100 комнат — «не для гостей».';
 const DIGITS_AFTER_POINT = 5;
+const POST_DATA_URL = 'https://23.javascript.pages.academy/keksobooking';
 
 const form = document.querySelector('.ad-form');
 const formFieldsets = form.querySelectorAll('fieldset');
@@ -108,25 +114,25 @@ resetButton.addEventListener('click', (evt) => {
   resetForm();
 });
 
-const setFormSubmit = (onSuccess, onError) => {
-  form.addEventListener('submit', (evt) => {
-    evt.preventDefault();
-
-    sendData(
-      () => {
-        onSuccess();
-        resetForm();
-      },
-      () => onError(),
-      new FormData(evt.target),
-    );
+form.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+  getOrPostData({
+    url: POST_DATA_URL,
+    method: 'POST',
+    body: new FormData(evt.target),
+    onSuccessCb: () => {
+      openSuccessMessage();
+      resetForm();
+    },
+    onErrorCb: openErrorMessage,
   });
-};
+});
 
 export {
   activateForm,
   deactivateForm,
   setAddressValue,
   addressInput,
-  setFormSubmit
+  resetButton,
+  form
 };
