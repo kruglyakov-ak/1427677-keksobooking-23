@@ -2,7 +2,8 @@ import {
   activateMapFilters,
   deactivateMapFilters,
   filterMapMarkers,
-  resetMapFilter
+  resetMapFilter,
+  setChangeFilter
 } from './map-filters.js';
 
 import {
@@ -13,7 +14,10 @@ import {
 } from './form.js';
 
 import { getOrPostData } from './api.js';
-import { showAlert } from './util.js';
+import {
+  showAlert,
+  debounce
+} from './util.js';
 
 import {
   addMap,
@@ -21,7 +25,7 @@ import {
 } from './map.js';
 
 const GET_DATA_URL = 'https://23.javascript.pages.academy/keksobooking/data';
-
+const RERENDER_DELAY = 500;
 // Функции активации страницы
 const deactivatePage = () => {
   deactivateMapFilters();
@@ -39,7 +43,10 @@ getOrPostData({
   onSuccessCb: (data) => {
     activateMapFilters();
     renderAdsOnMap(data);
-    filterMapMarkers(data, renderAdsOnMap);
+    setChangeFilter(debounce(
+      () => renderAdsOnMap(filterMapMarkers(data)),
+      RERENDER_DELAY,
+    ));
     resetButton.addEventListener('click', () => resetMapFilter(data, renderAdsOnMap));
     form.addEventListener('submit', () => resetMapFilter(data, renderAdsOnMap));
   },

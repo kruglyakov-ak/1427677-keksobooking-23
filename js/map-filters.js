@@ -73,33 +73,37 @@ const compareByPrice = (ad) => {
   }
 };
 
-const filterMapMarkers = (data, cb) => {
-  mapFilters.addEventListener('change', () => {
-    const housingFeatures = mapFilters.querySelectorAll('.map__checkbox:checked');
-    const housingFeatureValues = getValues(housingFeatures);
-
-    const compareByFeatures = (ad) => {
-      const isTrueArr = [];
-      if (!housingFeatures.length) {
-        return true;
-      } else if (ad.offer.features) {
-        housingFeatureValues.forEach((feature) => {
-          if (ad.offer.features.includes(feature)) {
-            isTrueArr.push(true);
-          }
-        });
-        return isTrueArr.length === housingFeatureValues.length;
+const compareByFeatures = (ad) => {
+  const housingFeatures = mapFilters.querySelectorAll('.map__checkbox:checked');
+  const housingFeatureValues = getValues(housingFeatures);
+  const isTrueArr = [];
+  if (!housingFeatures.length) {
+    return true;
+  } else if (ad.offer.features) {
+    housingFeatureValues.forEach((feature) => {
+      if (ad.offer.features.includes(feature)) {
+        isTrueArr.push(true);
       }
-    };
+    });
+    return isTrueArr.length === housingFeatureValues.length;
+  }
+};
 
-    cb(data.filter((ad) => {
-      const isTypeMatch = compareByType(ad);
-      const isRoomsMatch = compareByRooms(ad);
-      const isGuestsMatch = compareByGuests(ad);
-      const isPriceMatch = compareByPrice(ad);
-      const isFeaturesMatch = compareByFeatures(ad);
-      return isTypeMatch && isRoomsMatch && isGuestsMatch && isPriceMatch && isFeaturesMatch;
-    }));
+const filterMapMarkers = (data) => {
+  const filteredData = data.filter((ad) => {
+    const isTypeMatch = compareByType(ad);
+    const isRoomsMatch = compareByRooms(ad);
+    const isGuestsMatch = compareByGuests(ad);
+    const isPriceMatch = compareByPrice(ad);
+    const isFeaturesMatch = compareByFeatures(ad);
+    return isTypeMatch && isRoomsMatch && isGuestsMatch && isPriceMatch && isFeaturesMatch;
+  });
+  return filteredData;
+};
+
+const setChangeFilter = (cb) => {
+  mapFilters.addEventListener('change', () => {
+    cb();
   });
 };
 
@@ -112,5 +116,6 @@ export {
   activateMapFilters,
   deactivateMapFilters,
   filterMapMarkers,
-  resetMapFilter
+  resetMapFilter,
+  setChangeFilter
 };
