@@ -88,13 +88,13 @@ const addMap = (onLoadCallback) => {
 };
 
 const resetMap = () => {
+  setAddressValue(START_COORDINATES);
   mainMarker.setLatLng(START_COORDINATES);
   map.setView(START_COORDINATES, START_ZOOM_LEVEL);
   map.closePopup();
 };
 
 export {
-  START_COORDINATES,
   resetMap,
   addMap,
   map,
