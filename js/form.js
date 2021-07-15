@@ -6,24 +6,10 @@ import {
 
 import { offerData } from './card.js';
 
-import {
-  map,
-  resetMap,
-  START_COORDINATES
-} from './map.js';
-
-import { getOrPostData } from './api.js';
-
-import {
-  openSuccessMessage,
-  openErrorMessage
-} from './popup-messages.js';
-
 const GUESTS_VALUE_MIN = 0;
 const ROOMS_VALUE_MAX = 100;
 const ERROR_TEXT = 'Количество гостей не может превышать количества комнат;\n100 комнат — «не для гостей».';
 const DIGITS_AFTER_POINT = 5;
-const POST_DATA_URL = 'https://23.javascript.pages.academy/keksobooking';
 
 const form = document.querySelector('.ad-form');
 const formFieldsets = form.querySelectorAll('fieldset');
@@ -104,29 +90,7 @@ const resetForm = () => {
   form.reset();
   setPriceByType(typeSelect);
   validateCapacityAndRooms(roomNumberSelect);
-  if (map) {
-    setAddressValue(START_COORDINATES);
-    resetMap();
-  }
 };
-resetButton.addEventListener('click', (evt) => {
-  evt.preventDefault();
-  resetForm();
-});
-
-form.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-  getOrPostData({
-    url: POST_DATA_URL,
-    method: 'POST',
-    body: new FormData(evt.target),
-    onSuccessCb: () => {
-      openSuccessMessage();
-      resetForm();
-    },
-    onErrorCb: openErrorMessage,
-  });
-});
 
 export {
   activateForm,
@@ -134,5 +98,6 @@ export {
   setAddressValue,
   addressInput,
   resetButton,
-  form
+  form,
+  resetForm
 };

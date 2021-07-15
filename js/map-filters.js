@@ -1,8 +1,10 @@
 import {
   enableFormElements,
   disableFormElements,
-  getValues
+  debounce
 } from './util.js';
+
+import { renderAdsOnMap } from './map.js';
 
 const LOW_PRICE = 10000;
 const HIGH_PRICE = 50000;
@@ -18,7 +20,7 @@ const typeSelect = mapFilters.querySelector('#housing-type');
 const priceSelect = mapFilters.querySelector('#housing-price');
 const roomsSelect = mapFilters.querySelector('#housing-rooms');
 const guestsSelect = mapFilters.querySelector('#housing-guests');
-
+let sourseData = [];
 const activateMapFilters = () => {
   mapFilters.classList.remove('map__filters--disabled');
   enableFormElements([...filtersFieldsets, ...filtersSelects]);
@@ -29,93 +31,55 @@ const deactivateMapFilters = () => {
   disableFormElements([...filtersFieldsets, ...filtersSelects]);
 };
 
-const compareByType = (ad) => {
-  if (ad.offer.type) {
-    if (typeSelect.value === DEFAULT_FILTER_VALUE) {
-      return true;
-    } else {
-      return ad.offer.type === typeSelect.value;
-    }
-  }
-};
-
-const compareByRooms = (ad) => {
-  if (ad.offer.rooms) {
-    if (roomsSelect.value === DEFAULT_FILTER_VALUE) {
-      return true;
-    } else {
-      return ad.offer.rooms === +roomsSelect.value;
-    }
-  }
-};
-
-const compareByGuests = (ad) => {
-  if (ad.offer.guests) {
-    if (guestsSelect.value === DEFAULT_FILTER_VALUE) {
-      return true;
-    } else {
-      return ad.offer.guests === +guestsSelect.value;
-    }
-  }
+const setSourseData = (data) => {
+  sourseData = data;
+  return sourseData;
 };
 
 const compareByPrice = (ad) => {
-  if (ad.offer.price) {
-    if (priceSelect.value === PRICE_SELECT_MIDDLE_VALUE) {
+  switch (priceSelect.value) {
+    case PRICE_SELECT_MIDDLE_VALUE:
       return ad.offer.price >= LOW_PRICE && ad.offer.price <= HIGH_PRICE;
-    } else if (priceSelect.value === PRICE_SELECT_LOW_VALUE) {
+    case PRICE_SELECT_LOW_VALUE:
       return ad.offer.price <= LOW_PRICE;
-    } else if (priceSelect.value === PRICE_SELECT_HIGHT_VALUE) {
+    case PRICE_SELECT_HIGHT_VALUE:
       return ad.offer.price >= HIGH_PRICE;
-    } else if (priceSelect.value === DEFAULT_FILTER_VALUE) {
+    case DEFAULT_FILTER_VALUE:
       return true;
-    }
   }
 };
 
 const compareByFeatures = (ad) => {
   const housingFeatures = mapFilters.querySelectorAll('.map__checkbox:checked');
-  const housingFeatureValues = getValues(housingFeatures);
-  const isTrueArr = [];
-  if (!housingFeatures.length) {
-    return true;
-  } else if (ad.offer.features) {
-    housingFeatureValues.forEach((feature) => {
-      if (ad.offer.features.includes(feature)) {
-        isTrueArr.push(true);
-      }
-    });
-    return isTrueArr.length === housingFeatureValues.length;
+  const housingFeatureValues = Array.from(housingFeatures).map((element) => element.value);
+  if (ad.offer.features) {
+    return housingFeatureValues.every((feature) => ad.offer.features.includes(feature));
   }
 };
 
-const filterMapMarkers = (data) => {
-  const filteredData = data.filter((ad) => {
-    const isTypeMatch = compareByType(ad);
-    const isRoomsMatch = compareByRooms(ad);
-    const isGuestsMatch = compareByGuests(ad);
-    const isPriceMatch = compareByPrice(ad);
-    const isFeaturesMatch = compareByFeatures(ad);
-    return isTypeMatch && isRoomsMatch && isGuestsMatch && isPriceMatch && isFeaturesMatch;
-  });
-  return filteredData;
-};
+const filterAds = () => sourseData.filter((ad) => {
+  const isTypeMatch = typeSelect.value === DEFAULT_FILTER_VALUE ? true : ad.offer.type === typeSelect.value;
+  const isRoomsMatch = roomsSelect.value === DEFAULT_FILTER_VALUE ? true : ad.offer.rooms === +roomsSelect.value;
+  const isGuestsMatch = guestsSelect.value === DEFAULT_FILTER_VALUE ? true : ad.offer.guests === +guestsSelect.value;
+  const isPriceMatch = compareByPrice(ad);
+  const isFeaturesMatch = compareByFeatures(ad);
+  return isTypeMatch && isRoomsMatch && isGuestsMatch && isPriceMatch && isFeaturesMatch;
+});
 
-const setChangeFilter = (cb) => {
-  mapFilters.addEventListener('change', () => {
-    cb();
-  });
-};
+const onChangeFilter = debounce(() => renderAdsOnMap(filterAds()));
 
-const resetMapFilter = (data, cb) => {
+mapFilters.addEventListener('change', onChangeFilter);
+
+
+const resetMapFilter = () => {
   mapFilters.reset();
-  cb(data);
+  renderAdsOnMap(filterAds(sourseData));
 };
 
 export {
   activateMapFilters,
   deactivateMapFilters,
-  filterMapMarkers,
+  filterAds,
   resetMapFilter,
-  setChangeFilter
+  setSourseData
 };

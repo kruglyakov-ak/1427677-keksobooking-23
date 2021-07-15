@@ -1,5 +1,6 @@
 const ALERT_SHOW_TIME = 5000;
 const ERROR_MASSAGE = 'Не удалось загрузить данные объявлений с сервера ошибка: ';
+const TIMEOUT_DELAY = 500;
 
 const showAlert = () => {
   const alertContainer = document.createElement('div');
@@ -53,15 +54,7 @@ const onPopupEscKeydown = (callback, evt) => {
   }
 };
 
-const getValues = (elements) => {
-  const values = [];
-  elements.forEach((element) => {
-    values.push(element.value);
-  });
-  return values;
-};
-
-const debounce = (callback, timeoutDelay = 500) => {
+const debounce = (callback, timeoutDelay = TIMEOUT_DELAY) => {
   let timeoutId;
 
   return (...rest) => {
@@ -77,6 +70,5 @@ export {
   enableFormElements,
   disableFormElements,
   addInputValidationIndicator,
-  getValues,
   debounce
 };
