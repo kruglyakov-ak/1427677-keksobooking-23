@@ -1,10 +1,15 @@
 import {
   enableFormElements,
   disableFormElements,
-  addInputValidationIndicator
+  addInputValidationIndicator,
+  clearInputValidationIndicator
 } from './util.js';
 
 import { offerData } from './card.js';
+
+import {
+  resetFileCooserPreview
+} from './file-chooser-api.js';
 
 const GUESTS_VALUE_MIN = 0;
 const ROOMS_VALUE_MAX = 100;
@@ -33,7 +38,7 @@ addInputValidationIndicator(priceInput);
 const roomNumberSelect = document.querySelector('#room_number');
 const capacitySelect = document.querySelector('#capacity');
 
-const validateCapacityAndRooms = (element) => {
+const validateCapacityAndRooms = () => {
   const capacity = +capacitySelect.value;
   const rooms = +roomNumberSelect.value;
   const isRoomsInvalid = rooms !== ROOMS_VALUE_MAX && capacity === GUESTS_VALUE_MIN;
@@ -41,19 +46,22 @@ const validateCapacityAndRooms = (element) => {
   const isCompareInvalid = rooms < capacity;
   const isInvalid = isRoomsInvalid || isCapacityInvalid || isCompareInvalid;
   if (isInvalid) {
-    element.setCustomValidity(ERROR_TEXT);
+    roomNumberSelect.setCustomValidity(ERROR_TEXT);
+    capacitySelect.setCustomValidity(ERROR_TEXT);
   } else {
-    element.setCustomValidity('');
+    roomNumberSelect.setCustomValidity('');
+    capacitySelect.setCustomValidity('');
   }
 };
 
-validateCapacityAndRooms(roomNumberSelect);
+validateCapacityAndRooms();
 roomNumberSelect.addEventListener('change', (evt) => {
   validateCapacityAndRooms(evt.target);
 });
 capacitySelect.addEventListener('change', (evt) => {
   validateCapacityAndRooms(evt.target);
 });
+
 
 const typeSelect = document.querySelector('#type');
 
@@ -89,7 +97,10 @@ const resetButton = document.querySelector('.ad-form__reset');
 const resetForm = () => {
   form.reset();
   setPriceByType(typeSelect);
-  validateCapacityAndRooms(roomNumberSelect);
+  validateCapacityAndRooms();
+  resetFileCooserPreview();
+  clearInputValidationIndicator(titleInput);
+  clearInputValidationIndicator(priceInput);
 };
 
 export {

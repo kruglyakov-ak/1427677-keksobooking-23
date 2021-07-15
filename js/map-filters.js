@@ -33,7 +33,6 @@ const deactivateMapFilters = () => {
 
 const setSourseData = (data) => {
   sourseData = data;
-  return sourseData;
 };
 
 const compareByPrice = (ad) => {
