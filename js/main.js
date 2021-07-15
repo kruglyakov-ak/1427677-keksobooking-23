@@ -29,6 +29,8 @@ import {
   openErrorMessage
 } from './popup-messages.js';
 
+import { resetFileCooserPreview } from './file-chooser-api.js';
+
 const GET_DATA_URL = 'https://23.javascript.pages.academy/keksobooking/data';
 const POST_DATA_URL = 'https://23.javascript.pages.academy/keksobooking';
 
@@ -59,6 +61,7 @@ const onDataLoadSuccess = (data) => {
   resetButton.addEventListener('click', (evt) => {
     evt.preventDefault();
     resetForm();
+    resetFileCooserPreview();
     if (map) {
       resetMap();
       resetMapFilter();
