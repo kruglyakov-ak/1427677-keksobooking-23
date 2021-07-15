@@ -1,4 +1,5 @@
 const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+const DEFAULT_AVATAR_HTML = '<img src="img/muffin-grey.svg" alt="Аватар пользователя" width="40" height="44">';
 const avatar = {
   fileChooser: document.querySelector('#avatar'),
   previewContainer: document.querySelector('.ad-form-header__preview'),
@@ -33,7 +34,7 @@ const onChangeFileCooser = ({ fileChooser, previewContainer, alt, width, height 
 
 const resetFileCooserPreview = () => {
   avatar.previewContainer
-    .innerHTML = '<img src="img/muffin-grey.svg" alt="Аватар пользователя" width="40" height="44">';
+    .innerHTML = DEFAULT_AVATAR_HTML;
   photo.previewContainer.innerHTML = '';
 };
 
