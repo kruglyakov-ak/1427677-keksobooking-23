@@ -44,6 +44,9 @@ const addInputValidationIndicator = (input) => {
     }
   });
 };
+const clearInputValidationIndicator = (input) => {
+  input.style.boxShadow = '';
+};
 
 const isEscEvent = (evt) => evt.key === 'Escape' || evt.key === 'Esc';
 
@@ -70,5 +73,6 @@ export {
   enableFormElements,
   disableFormElements,
   addInputValidationIndicator,
-  debounce
+  debounce,
+  clearInputValidationIndicator
 };

@@ -13,27 +13,26 @@ const PRICE_SELECT_MIDDLE_VALUE = 'middle';
 const PRICE_SELECT_LOW_VALUE = 'low';
 const PRICE_SELECT_HIGHT_VALUE = 'high';
 
-const mapFilters = document.querySelector('.map__filters');
-const filtersFieldsets = mapFilters.querySelectorAll('fieldset');
-const filtersSelects = mapFilters.querySelectorAll('select');
-const typeSelect = mapFilters.querySelector('#housing-type');
-const priceSelect = mapFilters.querySelector('#housing-price');
-const roomsSelect = mapFilters.querySelector('#housing-rooms');
-const guestsSelect = mapFilters.querySelector('#housing-guests');
+const mapFiltersForm = document.querySelector('.map__filters');
+const filtersFieldsets = mapFiltersForm.querySelectorAll('fieldset');
+const filtersSelects = mapFiltersForm.querySelectorAll('select');
+const typeSelect = mapFiltersForm.querySelector('#housing-type');
+const priceSelect = mapFiltersForm.querySelector('#housing-price');
+const roomsSelect = mapFiltersForm.querySelector('#housing-rooms');
+const guestsSelect = mapFiltersForm.querySelector('#housing-guests');
 let sourseData = [];
-const activateMapFilters = () => {
-  mapFilters.classList.remove('map__filters--disabled');
+const activateMapFiltersForm = () => {
+  mapFiltersForm.classList.remove('map__filters--disabled');
   enableFormElements([...filtersFieldsets, ...filtersSelects]);
 };
 
-const deactivateMapFilters = () => {
-  mapFilters.classList.add('map__filters--disabled');
+const deactivateMapFiltersForm = () => {
+  mapFiltersForm.classList.add('map__filters--disabled');
   disableFormElements([...filtersFieldsets, ...filtersSelects]);
 };
 
 const setSourseData = (data) => {
   sourseData = data;
-  return sourseData;
 };
 
 const compareByPrice = (ad) => {
@@ -50,7 +49,7 @@ const compareByPrice = (ad) => {
 };
 
 const compareByFeatures = (ad) => {
-  const housingFeatures = mapFilters.querySelectorAll('.map__checkbox:checked');
+  const housingFeatures = mapFiltersForm.querySelectorAll('.map__checkbox:checked');
   const housingFeatureValues = Array.from(housingFeatures).map((element) => element.value);
   if (ad.offer.features) {
     return housingFeatureValues.every((feature) => ad.offer.features.includes(feature));
@@ -68,18 +67,18 @@ const filterAds = () => sourseData.filter((ad) => {
 
 const onChangeFilter = debounce(() => renderAdsOnMap(filterAds()));
 
-mapFilters.addEventListener('change', onChangeFilter);
+mapFiltersForm.addEventListener('change', onChangeFilter);
 
 
-const resetMapFilter = () => {
-  mapFilters.reset();
+const resetMapFilterForm = () => {
+  mapFiltersForm.reset();
   renderAdsOnMap(filterAds(sourseData));
 };
 
 export {
-  activateMapFilters,
-  deactivateMapFilters,
+  activateMapFiltersForm,
+  deactivateMapFiltersForm,
   filterAds,
-  resetMapFilter,
+  resetMapFilterForm,
   setSourseData
 };

@@ -83,13 +83,13 @@ const createCard = (data) => {
   }
   // Фотографии
   if (data.offer.photos) {
-    const photos = card.querySelector('.popup__photos');
+    const photosContainer = card.querySelector('.popup__photos');
     if (!data.offer.photos.length) {
-      photos.remove();
+      photosContainer.remove();
     } else {
-      photos.innerHTML = '';
+      photosContainer.innerHTML = '';
       data.offer.photos.forEach((photoSrc) => {
-        photos.insertAdjacentHTML('afterend',
+        photosContainer.insertAdjacentHTML('afterend',
           `<img src=${photoSrc} class="popup__photo" alt="Фотография жилья" width="45" height="40"></img>`);
       });
     }
