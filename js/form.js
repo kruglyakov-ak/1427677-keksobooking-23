@@ -39,11 +39,11 @@ const roomNumberSelect = document.querySelector('#room_number');
 const capacitySelect = document.querySelector('#capacity');
 
 const validateCapacityAndRooms = () => {
-  const capacity = +capacitySelect.value;
-  const rooms = +roomNumberSelect.value;
-  const isRoomsInvalid = rooms !== ROOMS_VALUE_MAX && capacity === GUESTS_VALUE_MIN;
-  const isCapacityInvalid = rooms === ROOMS_VALUE_MAX && capacity !== GUESTS_VALUE_MIN;
-  const isCompareInvalid = rooms < capacity;
+  const capacityValue = +capacitySelect.value;
+  const roomsValue = +roomNumberSelect.value;
+  const isRoomsInvalid = roomsValue !== ROOMS_VALUE_MAX && capacityValue === GUESTS_VALUE_MIN;
+  const isCapacityInvalid = roomsValue === ROOMS_VALUE_MAX && capacityValue !== GUESTS_VALUE_MIN;
+  const isCompareInvalid = roomsValue < capacityValue;
   const isInvalid = isRoomsInvalid || isCapacityInvalid || isCompareInvalid;
   if (isInvalid) {
     roomNumberSelect.setCustomValidity(ERROR_TEXT);
