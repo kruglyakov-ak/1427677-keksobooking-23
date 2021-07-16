@@ -19,7 +19,7 @@ const AD_PIN = {
   iconSize: [40, 40],
   iconAnchor: [20, 40],
 };
-const ADS_ON_MAP_COUNT = 10;
+
 const map = L.map('map-canvas');
 const mainPin = L.icon(MAIN_PIN);
 const mainMarker = L.marker(
@@ -54,7 +54,6 @@ const renderAdsOnMap = (data) => {
   adMarkerGroup.clearLayers();
   if (data) {
     data
-      .slice(0, ADS_ON_MAP_COUNT)
       .forEach((ad) => {
         const location = ad.location;
         const card = createCard(ad);
@@ -80,7 +79,7 @@ const addMap = (onLoadCallback) => {
 
   if (addressInput) {
     setAddressValue(START_COORDINATES);
-    mainMarker.on('moveend', (evt) => {
+    mainMarker.on('move', (evt) => {
       const address = evt.target.getLatLng();
       setAddressValue(address);
     });

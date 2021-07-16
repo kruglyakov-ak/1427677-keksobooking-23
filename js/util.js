@@ -50,13 +50,6 @@ const clearInputValidationIndicator = (input) => {
 
 const isEscEvent = (evt) => evt.key === 'Escape' || evt.key === 'Esc';
 
-const onPopupEscKeydown = (callback, evt) => {
-  if (isEscEvent(evt)) {
-    evt.preventDefault();
-    callback();
-  }
-};
-
 const debounce = (callback, timeoutDelay = TIMEOUT_DELAY) => {
   let timeoutId;
 
@@ -68,7 +61,6 @@ const debounce = (callback, timeoutDelay = TIMEOUT_DELAY) => {
 
 export {
   isEscEvent,
-  onPopupEscKeydown,
   showAlert,
   enableFormElements,
   disableFormElements,

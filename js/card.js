@@ -82,19 +82,18 @@ const createCard = (data) => {
     card.querySelector('.popup__description').textContent = data.offer.description;
   }
   // Фотографии
-  if (data.offer.photos) {
-    const photosContainer = card.querySelector('.popup__photos');
-    if (!data.offer.photos.length) {
-      photosContainer.remove();
-    } else {
-      photosContainer.innerHTML = '';
-      data.offer.photos.forEach((photoSrc) => {
-        photosContainer.insertAdjacentHTML('afterend',
-          `<img src=${photoSrc} class="popup__photo" alt="Фотография жилья" width="45" height="40"></img>`);
-      });
-    }
-  }
 
+  const photosContainer = card.querySelector('.popup__photos');
+  if (data.offer.photos) {
+    photosContainer.innerHTML = '';
+    data.offer.photos.forEach((photoSrc) => {
+      photosContainer.insertAdjacentHTML('afterend',
+        `<img src=${photoSrc} class="popup__photo" alt="Фотография жилья" width="45" height="40">`);
+    });
+  } else {
+    photosContainer.remove();
+
+  }
   // Аватарка
   const avatar = card.querySelector('.popup__avatar');
   if (!data.author.avatar.length) {

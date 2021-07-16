@@ -12,6 +12,7 @@ const DEFAULT_FILTER_VALUE = 'any';
 const PRICE_SELECT_MIDDLE_VALUE = 'middle';
 const PRICE_SELECT_LOW_VALUE = 'low';
 const PRICE_SELECT_HIGHT_VALUE = 'high';
+const FILTERED_ADS_COUNT = 10;
 
 const mapFiltersForm = document.querySelector('.map__filters');
 const filtersFieldsets = mapFiltersForm.querySelectorAll('fieldset');
@@ -53,17 +54,31 @@ const compareByFeatures = (ad) => {
   const housingFeatureValues = Array.from(housingFeatures).map((element) => element.value);
   if (ad.offer.features) {
     return housingFeatureValues.every((feature) => ad.offer.features.includes(feature));
+  } else {
+    return true;
   }
 };
 
-const filterAds = () => sourseData.filter((ad) => {
-  const isTypeMatch = typeSelect.value === DEFAULT_FILTER_VALUE ? true : ad.offer.type === typeSelect.value;
-  const isRoomsMatch = roomsSelect.value === DEFAULT_FILTER_VALUE ? true : ad.offer.rooms === +roomsSelect.value;
-  const isGuestsMatch = guestsSelect.value === DEFAULT_FILTER_VALUE ? true : ad.offer.guests === +guestsSelect.value;
-  const isPriceMatch = compareByPrice(ad);
-  const isFeaturesMatch = compareByFeatures(ad);
-  return isTypeMatch && isRoomsMatch && isGuestsMatch && isPriceMatch && isFeaturesMatch;
-});
+const filterAds = () => {
+  const filteredData = [];
+  for (let i = 0; filteredData.length < FILTERED_ADS_COUNT && i < sourseData.length; i++) {
+    const isTypeMatch = typeSelect.value === DEFAULT_FILTER_VALUE ||
+      sourseData[i].offer.type === typeSelect.value;
+
+    const isRoomsMatch = roomsSelect.value === DEFAULT_FILTER_VALUE ||
+      sourseData[i].offer.rooms === +roomsSelect.value;
+
+    const isGuestsMatch = guestsSelect.value === DEFAULT_FILTER_VALUE ||
+      sourseData[i].offer.guests === +guestsSelect.value;
+
+    const isPriceMatch = compareByPrice(sourseData[i]);
+    const isFeaturesMatch = compareByFeatures(sourseData[i]);
+    if (isTypeMatch && isRoomsMatch && isGuestsMatch && isPriceMatch && isFeaturesMatch) {
+      filteredData.push(sourseData[i]);
+    }
+  }
+  return filteredData;
+};
 
 const onChangeFilter = debounce(() => renderAdsOnMap(filterAds()));
 
