@@ -11,6 +11,7 @@ const errorCloseButton = errorMessageTemplate.querySelector('.error__button');
 const onPopupSuccsessEscKeydown = (evt) => {
   if (isEscEvent(evt)) {
     evt.preventDefault();
+    // eslint-disable-next-line no-use-before-define
     closeSuccessMessage();
   }
 };
@@ -18,6 +19,7 @@ const onPopupSuccsessEscKeydown = (evt) => {
 const onPopupErrorEscKeydown = (evt) => {
   if (isEscEvent(evt)) {
     evt.preventDefault();
+    // eslint-disable-next-line no-use-before-define
     closeErrorMessage();
   }
 };
